@@ -1,7 +1,7 @@
 #C forecast file written by R function SS_writeforecast
 #C rerun model to get more complete formatting in forecast.ss_new
 #C should work with SS version: 3.24
-#C file write time: 2019-05-30 10:41:34
+#C file write time: 2019-06-27 11:04:24
 #
 1 #_benchmarks
 2 #_MSY
@@ -15,16 +15,16 @@
 1 #_F_scalar
 #_Fcast_years:  beg_selex, end_selex, beg_relF, end_relF
 0 0 0 0
-1 #_ControlRuleMethod
+3 #_ControlRuleMethod
 0.4 #_BforconstantF
 0.1 #_BfornoF
-0.788 #_Flimitfraction
+0.773 #_Flimitfraction
 3 #_N_forecast_loops
 3 #_First_forecast_loop_with_stochastic_recruitment
 0 #_Forecast_loop_control_3
 0 #_Forecast_loop_control_4
 0 #_Forecast_loop_control_5
-2031 #_FirstYear_for_caps_and_allocations
+2030 #_FirstYear_for_caps_and_allocations
 0 #_stddev_of_log_catch_ratio
 0 #_Do_West_Coast_gfish_rebuilder_output
 -1 #_Ydecl
@@ -38,7 +38,7 @@
 -1
 # fleet assignment to allocation group (enter group ID# for each fleet, 0 for not included in an alloc group)
 0 0 0
-48 #_Ncatch
+45 #_Ncatch
 2 #_InputBasis
  #_Year Seas Fleet Catch_or_F
    2015    1     1      0.020
@@ -47,47 +47,44 @@
    2016    1     1      0.020
    2016    1     2      0.200
    2016    1     3      1.810
-   2017    1     1      1.339
-   2017    1     2      0.182
-   2017    1     3      1.157
-   2018    1     1      1.436
-   2018    1     2      0.242
-   2018    1     3      1.194
-   2019    1     1      1.436
-   2019    1     2      0.242
-   2019    1     3      1.194
+   2017    1     1      0.017
+   2017    1     2      0.187
+   2017    1     3      1.430
+   2018    1     1      0.032
+   2018    1     2      0.262
+   2018    1     3      1.614
+   2019    1     1      1.339
+   2019    1     2      0.182
+   2019    1     3      1.157
    2020    1     1      1.436
    2020    1     2      0.242
    2020    1     3      1.194
-   2021    1     1      7.320
-   2021    1     2      1.050
-   2021    1     3      5.160
-   2022    1     1      7.320
-   2022    1     2      1.040
-   2022    1     3      5.150
-   2023    1     1      7.330
-   2023    1     2      1.040
-   2023    1     3      5.140
-   2024    1     1      7.340
-   2024    1     2      1.040
-   2024    1     3      5.140
-   2025    1     1      7.350
-   2025    1     2      1.040
-   2025    1     3      5.130
-   2026    1     1      7.360
-   2026    1     2      1.040
-   2026    1     3      5.120
-   2027    1     1      7.370
-   2027    1     2      1.040
-   2027    1     3      5.110
-   2028    1     1      7.380
-   2028    1     2      1.030
-   2028    1     3      5.100
-   2029    1     1      7.390
-   2029    1     2      1.030
-   2029    1     3      5.090
-   2030    1     1      7.400
-   2030    1     2      1.030
-   2030    1     3      5.090
+   2021    1     1      7.170
+   2021    1     2      1.020
+   2021    1     3      5.060
+   2022    1     1      7.180
+   2022    1     2      1.020
+   2022    1     3      5.050
+   2023    1     1      7.190
+   2023    1     2      1.020
+   2023    1     3      5.040
+   2024    1     1      7.190
+   2024    1     2      1.020
+   2024    1     3      5.030
+   2025    1     1      7.200
+   2025    1     2      1.030
+   2025    1     3      5.020
+   2026    1     1      7.210
+   2026    1     2      1.010
+   2026    1     3      5.020
+   2027    1     1      7.210
+   2027    1     2      1.020
+   2027    1     3      5.010
+   2028    1     1      7.220
+   2028    1     2      1.020
+   2028    1     3      5.000
+   2029    1     1      7.240
+   2029    1     2      1.010
+   2029    1     3      5.000
 #
 999 # verify end of input 

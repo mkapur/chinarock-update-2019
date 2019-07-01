@@ -1,5 +1,5 @@
 SS-V3.24U-safe;_08/29/2014;_Stock_Synthesis_by_Richard_Methot_(NOAA)_using_ADMB_11.2_Win64
-Thu May 30 10:41:15 2019
+Thu Jun 27 08:43:08 2019
 
 china_WAonly_data.ss  datfilename
 china_WAonly_control.ss  ctlfilename
@@ -426,16 +426,16 @@ Forecast selected; next 20 input values will be read as a block then parsed and 
 1 Fmult value used only if Do_Forecast==5
  0 0 0 0 Begin-end yrs for average selex; begin-end yrs for allocation
  2014 2014 2014 2014  After Transformation:  begin-end yrs for average selex; begin-end yrs for rel F
-1  HarvestPolicy 
+3  HarvestPolicy 
 0.4  H4010_top 
 0.1  H4010_bot 
-0.788  H4010_scale 
+0.773  H4010_scale 
 3 N forecast loops (1-3) (recommend 3)
 3 First forecast loop with stochastic recruitment (recommend 3)
 0 Forecast loop control #3 (reserved for future use) 
 0 Forecast loop control #4 (reserved for future use) 
 0 Forecast loop control #5 (reserved for future use) 
-2031  Fcast_Cap_FirstYear for caps and allocations (should be after any fixed inputs) 
+2030  Fcast_Cap_FirstYear for caps and allocations (should be after any fixed inputs) 
 0  Impl_Error_Std 
 0  Do_Rebuilder 
 -1  Rebuild_Ydecl 
@@ -455,9 +455,9 @@ Now read cap for each fleet, then cap for each area (even if only 1 area), then 
  0 0 0
  calculated number of allocation groups 0
  Allocation among groups (N entries must match number of allocation groups created) 
-48 N_Fcast_input_catches 
+45 N_Fcast_input_catches 
 2 # basis for input Fcast catch:  2=dead catch; 3=retained catch; 99=input Hrate(F); -1=read fleet/time specific (bio/num units are from fleetunits; note new codes in SSV3.20)
-Now read 48 of fixed forecast catches (yr, seas, fleet, (basis,) catch_or_F) 
+Now read 45 of fixed forecast catches (yr, seas, fleet, (basis,) catch_or_F) 
  Fcast_catches_input 
  2015 1 1 0.02
  2015 1 2 0.19
@@ -465,48 +465,45 @@ Now read 48 of fixed forecast catches (yr, seas, fleet, (basis,) catch_or_F)
  2016 1 1 0.02
  2016 1 2 0.2
  2016 1 3 1.81
- 2017 1 1 1.339
- 2017 1 2 0.182
- 2017 1 3 1.157
- 2018 1 1 1.436
- 2018 1 2 0.242
- 2018 1 3 1.194
- 2019 1 1 1.436
- 2019 1 2 0.242
- 2019 1 3 1.194
+ 2017 1 1 0.017
+ 2017 1 2 0.187
+ 2017 1 3 1.43
+ 2018 1 1 0.032
+ 2018 1 2 0.262
+ 2018 1 3 1.614
+ 2019 1 1 1.339
+ 2019 1 2 0.182
+ 2019 1 3 1.157
  2020 1 1 1.436
  2020 1 2 0.242
  2020 1 3 1.194
- 2021 1 1 3.76
- 2021 1 2 0.54
- 2021 1 3 2.65
- 2022 1 1 3.77
- 2022 1 2 0.54
- 2022 1 3 2.65
- 2023 1 1 3.77
- 2023 1 2 0.54
- 2023 1 3 2.65
- 2024 1 1 3.77
- 2024 1 2 0.54
- 2024 1 3 2.64
- 2025 1 1 3.78
- 2025 1 2 0.53
- 2025 1 3 2.64
- 2026 1 1 3.79
- 2026 1 2 0.53
- 2026 1 3 2.63
- 2027 1 1 3.79
- 2027 1 2 0.53
- 2027 1 3 2.63
- 2028 1 1 3.8
- 2028 1 2 0.53
- 2028 1 3 2.62
- 2029 1 1 3.8
- 2029 1 2 0.53
- 2029 1 3 2.62
- 2030 1 1 3.81
- 2030 1 2 0.53
- 2030 1 3 2.62
+ 2021 1 1 4.78
+ 2021 1 2 0.68
+ 2021 1 3 3.37
+ 2022 1 1 4.58
+ 2022 1 2 0.65
+ 2022 1 3 3.22
+ 2023 1 1 4.39
+ 2023 1 2 0.62
+ 2023 1 3 3.08
+ 2024 1 1 4.22
+ 2024 1 2 0.6
+ 2024 1 3 2.95
+ 2025 1 1 4.07
+ 2025 1 2 0.58
+ 2025 1 3 2.84
+ 2026 1 1 3.92
+ 2026 1 2 0.55
+ 2026 1 3 2.73
+ 2027 1 1 3.8
+ 2027 1 2 0.54
+ 2027 1 3 2.64
+ 2028 1 1 3.68
+ 2028 1 2 0.52
+ 2028 1 3 2.55
+ 2029 1 1 3.59
+ 2029 1 2 0.5
+ 2029 1 3 2.48
 Processed 
  0.02 2
  0.19 2
@@ -514,48 +511,48 @@ Processed
  0.02 2
  0.2 2
  1.81 2
+ 0.017 2
+ 0.187 2
+ 1.43 2
+ 0.032 2
+ 0.262 2
+ 1.614 2
  1.339 2
  0.182 2
  1.157 2
  1.436 2
  0.242 2
  1.194 2
- 1.436 2
- 0.242 2
- 1.194 2
- 1.436 2
- 0.242 2
- 1.194 2
- 3.76 2
- 0.54 2
- 2.65 2
- 3.77 2
- 0.54 2
- 2.65 2
- 3.77 2
- 0.54 2
- 2.65 2
- 3.77 2
+ 4.78 2
+ 0.68 2
+ 3.37 2
+ 4.58 2
+ 0.65 2
+ 3.22 2
+ 4.39 2
+ 0.62 2
+ 3.08 2
+ 4.22 2
+ 0.6 2
+ 2.95 2
+ 4.07 2
+ 0.58 2
+ 2.84 2
+ 3.92 2
+ 0.55 2
+ 2.73 2
+ 3.8 2
  0.54 2
  2.64 2
- 3.78 2
- 0.53 2
- 2.64 2
- 3.79 2
- 0.53 2
- 2.63 2
- 3.79 2
- 0.53 2
- 2.63 2
- 3.8 2
- 0.53 2
- 2.62 2
- 3.8 2
- 0.53 2
- 2.62 2
- 3.81 2
- 0.53 2
- 2.62 2
+ 3.68 2
+ 0.52 2
+ 2.55 2
+ 3.59 2
+ 0.5 2
+ 2.48 2
+ -1 0
+ -1 0
+ -1 0
  -1 0
  -1 0
  -1 0
@@ -584,7 +581,7 @@ Processed
 2  MGparm_def
 2  MG_adjust_method
  Biology parameter setup
-1  0.01 0.15 0.08 -2.94 3 0.53 -3 0 0 0 0 0 0 0 NatM_p_1_Fem_GP_1
+1  0.01 0.15 0.09 -2.94 3 0.53 -3 0 0 0 0 0 0 0 NatM_p_1_Fem_GP_1
 2  -10 45 2 2 0 10 -2 0 0 0 0 0 0 0 L_at_Amin_Fem_GP_1
 3  20 50 34 34 0 10 6 0 0 0 0 0 0 0 L_at_Amax_Fem_GP_1
 4  0.01 0.3 0.1 0.1 0 0.8 6 0 0 0 0 0 0 0 VonBert_K_Fem_GP_1
@@ -748,7 +745,7 @@ Create reverse pointers to discard observations
 
 **************************************
  ready to do biological and selectivity calculations once 
- initial bio parameters:  0.08 2 34 0.1 0.1 0.1 0 0 0 0 0 0 1.17e-005 3.177 28.5 -1 0.196 0.0571 1.17e-005 3.177 0 0 0 0
+ initial bio parameters:  0.09 2 34 0.1 0.1 0.1 0 0 0 0 0 0 1.17e-005 3.177 28.5 -1 0.196 0.0571 1.17e-005 3.177 0 0 0 0
   growth factors that cannot be time-varying: 
 seasonal K:  1 1
 seasonal wtlen adjuster 
@@ -759,8 +756,8 @@ CV_at_age_max(for each morph and gender)  0.1 0.1
 Adjusted size at maxage: 35.666
 Adjusted size at maxage: 35.666
  did natmort 
- 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08
- 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08 0.08
+ 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09
+ 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09 0.09
  did wtlen and maturity
  made the age_age' key 
 bias_adjustment vector:  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0

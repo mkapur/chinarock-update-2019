@@ -26,7 +26,7 @@
 #_growth_parms
 #_LO    HI      INIT    PRIOR   PR_type SD   PHASE env-var use_dev dev_minyr dev_maxyr dev_SD Block Block_Fxn
 # female growth
-0.01  0.25 0.07 -2.94  3  0.53   -7  0   0   0   0   0   0   0   #   NatM_p_1_Fem_GP_1 (with prior from Owen)
+0.01    0.25    0.07   -2.94    3      0.53     -7      0       0       0       0       0       0       0       #       NatM_p_1_Fem_GP_1 (with prior from Owen)
 0       10        2      2      -1      10      -2      0       0       0       0       0       0       0       #       L_at_Amin_Fem_GP_1
 25      45      33      34      -1      10       6      0       0       0       0       0       0       0       #       L_at_Amax_Fem_GP_1
 0.05    0.3     0.15    0.1     -1      0.8      6      0       0       0       0       0       0       0       #       VonBert_K_Fem_GP_1

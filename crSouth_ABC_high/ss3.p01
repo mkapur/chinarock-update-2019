@@ -1,8 +1,8 @@
-# Number of parameters = 1  Objective function value = 736.693  Maximum gradient component = 8.11635
+# Number of parameters = 1  Objective function value = 743.007  Maximum gradient component = 4.20111
 # dummy_parm:
 1.00000000000
 # MGparm[1]:
-0.0800000000000
+0.0900000000000
 # MGparm[2]:
 2.00000000000
 # MGparm[3]:
@@ -50,7 +50,7 @@
 # MGparm[24]:
 0.000000000000
 # SR_parm[1]:
-5.99517942316
+6.57425302160
 # SR_parm[2]:
 0.773000000000
 # SR_parm[3]:
