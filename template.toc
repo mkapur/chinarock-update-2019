@@ -1,0 +1,13 @@
+\contentsline {section}{Executive summary}{1}{section*.2}% 
+\contentsline {subsection}{Stock}{1}{section*.3}% 
+\contentsline {subsection}{Catches}{1}{section*.4}% 
+\contentsline {subsection}{Data and assessment}{8}{section*.10}% 
+\contentsline {subsection}{Stock biomass}{8}{section*.11}% 
+\contentsline {subsection}{Recruitment}{12}{section*.17}% 
+\contentsline {subsection}{Exploitation status}{16}{section*.22}% 
+\contentsline {subsection}{Ecosystem considerations}{23}{section*.29}% 
+\contentsline {subsection}{Reference points}{23}{section*.30}% 
+\contentsline {subsection}{Management performance}{27}{section*.34}% 
+\contentsline {subsection}{Unresolved problems and major uncertainties}{27}{section*.36}% 
+\contentsline {subsection}{Decision Tables}{28}{section*.37}% 
+\contentsline {subsection}{Research and data needs}{36}{section*.44}% 

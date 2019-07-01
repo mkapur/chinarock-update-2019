@@ -1,0 +1,987 @@
+---
+title: "A 2019 catch-only projection from the 2015 assessment of the status of China rockfish (Sebastes nebulosus) along the U.S. West Coast"
+author: ''
+date: ''
+graphics: yes
+output:
+ pdf_document:
+    fig_caption: yes
+    highlight: haddock
+    includes:
+      before_body: Titlepage.tex
+      in_header: header.tex
+header-includes: 
+- \usepackage{placeins}
+keep_tex: yes
+latex_engine: xelatex
+number_sections: yes
+toc: yes
+toc_depth: 4
+html_document:
+  toc: yes
+word_document: default
+documentclass: article
+fontsize: 12pt
+geometry: margin=1in
+csl: CJAFS.csl
+bibliography: chinarockfish2015.bib
+---
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+##read in necessary libraries
+setwd("C:/Users/Maia Kapur/Dropbox/UW/assessments/china_2019_update/chinarock-update-2019")
+# library(r4ss)
+library(xtable)
+library(ggplot2)
+library(reshape2)
+library(kableExtra)
+library(dplyr)
+options(xtable.comment = FALSE)  #turns off xtable comments
+options(scipen=999) # turn off scientific notation
+#########################################################################
+#CHANGE ME
+FirstYR <- 2019  # minimum year for tables
+LastYR <- 2030  # maximum year for tables
+#########################################################################
+
+##############################################################################################################
+#### loads workspace image of the BASE MODEL(S) from SS_output in r4ss    
+load("./r4ss/China_SS_output2019.RData")
+#number of workspaces
+n_models = 3
+#check the structure of the data here to make sure it contains "mod," the SS_output variable
+##############################################################################################################
+```
+
+\pagebreak
+
+\pagenumbering{arabic}
+\setcounter{page}{1}
+\renewcommand{\thefigure}{\alph{figure}}
+\renewcommand{\thetable}{\alph{table}}
+
+#Executive summary{-}
+
+##Stock{-}
+
+This is a catch-only projection of the China rockfish (\emph{Sebastes nebulosus}) resource in U.S. waters off the coast of the California, Oregon, and Washington using data through 2014.  China rockfish are modelled with three independent stock assessments to account for spatial variation in exploitation history as well as regional differences in growth and size composition of the catch. The northern area model is defined as Washington state Marine Catch Areas (MCAs) 1-4.  The central area model spans from the Oregon-Washington border to $40^\circ 10^\prime$ N. latitude.  The southern area model spans $40^\circ 10^\prime$ N. latitude to the U.S.-Mexico border.  However, very little catch of China rockfish occurs south of Point Conception, California ($34^\circ 27^\prime$ N. latitude).
+
+##Catches{-}
+China rockfish are most often caught by hook-and-line (both recreational and commercial fisheries) as well as by traps in the commercial live-fish fishery.  Although China rockfish were not a major target species, the commercial rockfish fishery along the U.S. Pacific West Coast developed in the late 1800s and early 1990s. Available estimates of China rockfish catch in California begin in the early 1900s, along with small commercial catches in Oregon until recreational landings began to increase in the early 1970s (Figures \ref{fig:Exec_wa_catch}-\ref{fig:Exec_ca_catch}). Reconstructed recreational landings of China rockfish in the northern assessment begin in 1967. As of 1995, Washington has prohibited commercial nearshore fixed gear in state waters and does not have a historical reconstruction of China rockfish commercial landings. The majority of commercial removals of China rockfish are now landed by live-fish fisheries in California and southern Oregon. The magnitude of total removals over the last 10 years peaked in 2009 (35.52 mt) and has been decreasing since then. In recent years, California has the largest removals of the three states (dominated by the recreational fleet) with smallest removals coming from the Oregon recreational fleet (Table \ref{tab:Exec_catch}).
+
+The nearshore live-fish fishery developed in California in the late 1980s and early 1990s and extended into Oregon by the mid-1990s, driven by the market prices for live fish.  Northern Oregon (north of Florence) does not contribute significantly to the live-fish fishery (maximum removal of 0.02 mt) as the market for this sector of the fishery is centered in California.  Catches from the live-fish fishery in southern Oregon (south of Florence) has composed the majority of the catch in that state since 1999, and peaked in 2002.  In California, the landings of live fish begin exceeding the landings of dead fish south of $40^\circ 10^\prime$ N. latitude in 1998 and north of  $40^\circ 10^\prime$ N. latitude in 1999; and the pattern continues through 2014.
+
+The historical reconstruction of landings from the recreational fishery for China rockfish in California goes back to 1928, and the fishery began significantly increasing in the late 1940s.  The recreational catches in California are significantly higher than the commercial catches, and have decreased in the last five years (Table \ref{tab:Exec_catch}).  Recreational catches in California peaked in 1987 at 53.29 mt and have declined to roughly 10-20 mt per year over the last 10 years. The trend is opposite in Oregon, with the magnitude of the commercial landings greater than the recreational landings. The historical landings from the recreational fleet in Oregon start in 1973 at 0.86 mt, peak in 1983 at 6.07 mt and again in 1993 at 6.04 mt.  The recreational catches over the last 10 years in Oregon have ranged from 1.67 mt in 2014 to 3.66 mt in 2007.  Recreational landings in Washington peaked in 1992 (7.98 mt) and have remained between 2-4 mt from 2005-2014.
+
+
+\FloatBarrier
+
+```{r, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+   #read in executive summary catches figure file
+    Exec_catch_all =  read.csv("./txt_files/Exec_catch_for_figs.csv")
+    colnames(Exec_catch_all) = c('Year','WA rec','OR rec.','OR comm.','CA rec.','CA comm.')
+    Exec_wa_catch = Exec_catch_all[,c(1:2)]
+    Exec_or_catch = Exec_catch_all[,c(1,3,4)]
+    Exec_ca_catch = Exec_catch_all[,c(1,5,6)]
+    
+    Exec_wa_catch = melt(Exec_wa_catch, id="Year")
+    Exec_or_catch = melt(Exec_or_catch, id="Year")
+    Exec_ca_catch = melt(Exec_ca_catch, id="Year")
+    colnames(Exec_wa_catch) = c('Year','Fleet','Removals')
+    colnames(Exec_or_catch) = c('Year','Fleet','Removals')
+    colnames(Exec_ca_catch) = c('Year','Fleet','Removals')
+```
+
+```{r,eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE,fig.cap="China rockfish landings for Washington. Washington does not have a commercial nearshore fishery. \\label{fig:Exec_wa_catch}"}
+ggplot(Exec_wa_catch, aes(x=Year, y=Removals,fill=Fleet)) +
+  theme_bw()+
+  theme(panel.grid.minor = element_blank()) +
+  geom_area(position='stack')+ 
+  scale_fill_manual(values = c( 'lightsteelblue3','coral'))+
+  scale_x_continuous(breaks=seq(1900,2020,20))+ ylab("Landings (mt)")
+```
+
+```{r,eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE,fig.cap="Stacked line plot of China rockfish landings history for Oregon by fleet (recreational and commercial). \\label{fig:Exec_or_catch}"}
+ggplot(Exec_or_catch, aes(x=Year, y=Removals,fill=Fleet)) +
+  theme_bw()+
+  theme(panel.grid.minor = element_blank()) +
+  geom_area(position='stack')+ 
+  scale_fill_manual(values = c( 'lightsteelblue3','coral'))+
+  scale_x_continuous(breaks=seq(1900,2020,20))+
+  ylab("Landings (mt)")
+
+```
+
+```{r,eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE,fig.cap="Stacked line plot of China rockfish landings history for California by fleet (recreational and commercial).  \\label{fig:Exec_ca_catch}"}
+ggplot(Exec_ca_catch, aes(x=Year, y=Removals,fill=Fleet)) + 
+  theme_bw()+
+  theme(panel.grid.minor = element_blank()) +
+  geom_area(position='stack')+ 
+  scale_fill_manual(values = c( 'lightsteelblue3','coral'))+
+  scale_x_continuous(breaks=seq(1900,2020,20))+ ylab("Landings (mt)")
+
+```
+
+```{r, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE, include=T}
+#read in executive summary catches table
+Exec_catch = read.csv("./txt_files/Exec_catch_summary.csv") %>% filter(Year > 2008)
+colnames(Exec_catch) =c('Year', 'Washington recreational','Oregon commercial','Oregon recreational','California commercial','California recreational','Total')
+#make executive summary catch table
+kable(Exec_catch, caption="\\label{tab:Exec_catch}Recent China rockfish landings and discard (mt) by fleet, used in the catch-only projection.") %>%kable_styling(latex_options = c("scale_down"))
+```
+
+\FloatBarrier
+
+ 
+![Map depicting the boundaries for the three base-case models, Southern model (south of $40^\circ 10^\prime$ N. latitude), Central model (south of $40^\circ 10^\prime$ N. latitude to the OR-WA border), and the Northern model (WA state MCAs 1-4). \label{fig:assess_region_map}](plots/assess_region_map.png)
+
+\FloatBarrier
+
+
+\newpage
+
+##Data and assessment{-}
+China rockfish was assessed as a data moderate stock in 2013 [@Cope2015] using the XDB-SRA modeling framework.  This assessment uses the newest version of Stock Synthesis (3.24u).  The model begins in 1900, and assumes the stock was at an unfished equilibrium that year.
+
+Data within the central and northern models were stratified as follows: central model north and south of Florence, OR and the northern model groups MCAs 1-2 (southern WA) and MCAs 3-4 (northern WA) (Figure \ref{fig:assess_region_map}).  Data for the management area south of $40^\circ 10^\prime$ N. latitude are aggregated, in part because historical removals from the dominant fisheries (recreational charter and private boat modes) prior to 2004 are not available at a finer spatial scale. The data used in the assessments includes commercial and recreational landings, Catch per Unit Effort (CPUE) indices from recreational and commercial fleets, and length and age compositions.  Discard data (total discards in mt and size compositions) from the commercial live-fish fishery were modelled south of $40^\circ 10^\prime$ N. latitude.  Where available, age and length compositions for the recreational party/charter (CPFV) and private/rental modes were developed separately.
+
+
+##Stock biomass{-}
+Estimated spawning output in the northern area (Washington state) declined between the 1960s and 1990s but has been largely stable during the past two decades (Figure \ref{fig:Spawnbio_all} and Table \ref{tab:SpawningDeplete_N}).  The estimated relative depletion level (spawning output relative to unfished spawning output) of the northern stock in 2015 is 73.4% (~95% asymptotic interval: $\pm$ 63.6% - 83.2%) (Figure \ref{fig:reldeplete_all}).
+
+The central area model for China rockfish estimates that spawning output is just above the biomass target in 2015 (Figure \ref{fig:Spawnbio_all} and Table \ref{tab:SpawningDeplete_C}). The rate of spawning output decline is estimated to be steepest during the 1980s to 1990s and continued to decline from the early 2000s at a slower rate to an estimated minimum of 39.6% in 2014. The estimated relative depletion level of the central stock in 2015 is 61.5% (~95% asymptotic interval: $\pm$ 53.8% - 69.2%) (Figure \ref{fig:reldeplete_all}).
+
+The assessment for the southern management area suggests that China rockfish were lightly, but steadily exploited since the early 1900s, with more rapid declines in spawning output beginning with development of the recreational fishery in the 1950s (Figure \ref{fig:Spawnbio_all} and Table \ref{tab:SpawningDeplete_S}). The estimated relative depletion level of the southern stock in 2015 is 29.6% (~95% asymptotic interval: $\pm$ 25.0% - 34.3%) (Figure \ref{fig:reldeplete_all}). Although spawning output in the southern area is more depleted than the central and northern areas, it is the only area with an increasing trend over the past 15 years.
+
+
+<!-- ***********************BEGIN: CREATE spawning output AND DEPLETION TABLE DATA ***************************-->
+
+```{r, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}      
+
+#########################################################################
+#CHANGE ME
+FirstYR <- 2010  # minimum year for the Spawning biomass table
+LastYR <-2019  # maximum year for the Spawning biomass table
+#########################################################################
+
+for (model in 1:n_models){
+  if(model==1){
+    mod=modN
+    mod_area='N'
+  } else {
+    if(model==2){
+      mod=modC
+      mod_area='C'
+    } else {
+      mod=modS
+      mod_area='S'
+    }}
+  
+  SpawningB = mod$derived_quants[grep("SSB_",mod$derived_quants$Label),]
+  SpawningB = SpawningB[c(-1,-2),]
+  
+  Depletion = mod$derived_quants[grep("Bratio",mod$derived_quants$Label),]
+  Depletion = Depletion[c(-1,-2),]
+  
+  #spawning biomass and std.dev data, calculate lower and upper 95% CI                 
+  SpawningByrs = SpawningB[SpawningB$Label>=paste("SSB_",FirstYR,sep='') &  
+                             SpawningB$Label<=paste("SSB_",LastYR,sep=''),]     
+  SpawningByrs$YEAR = seq(FirstYR,LastYR)
+  SpawningByrs$lowerCI = round(SpawningByrs$Value +qnorm(0.025)*SpawningByrs$StdDev, digits=2)
+  SpawningByrs$upperCI = round(SpawningByrs$Value -qnorm(0.025)*SpawningByrs$StdDev, digits=2)
+  SpawningByrs$CI = paste("(",SpawningByrs$lowerCI,"-",SpawningByrs$upperCI,")",sep="")
+  SpawningBtab=subset(SpawningByrs,select=c('YEAR','Value','CI'))
+  colnames(SpawningBtab) = c('Year','Spawning Output (billion eggs)','~ 95% confidence interval')
+  
+  #estimated depletion
+  Depletionyrs = Depletion[Depletion$Label>=paste("Bratio_",FirstYR,sep='') &  
+                             Depletion$Label<=paste("Bratio_",LastYR,sep=''),]     
+  Depletionyrs$YEAR = seq(FirstYR,LastYR)
+  Depletion$Value = round(Depletion$Value, digits=3)
+  Depletionyrs$lowerCI = round(Depletionyrs$Value +qnorm(0.025)*Depletionyrs$StdDev, digits=3)
+  Depletionyrs$upperCI = round(Depletionyrs$Value -qnorm(0.025)*Depletionyrs$StdDev, digits=3)
+  Depletionyrs$CI = paste("(",Depletionyrs$lowerCI,"-",Depletionyrs$upperCI,")",sep="")
+  Depletiontab=subset(Depletionyrs,select=c('Value','CI'))
+  colnames(Depletiontab) = c('Estimated depletion','~ 95% confidence interval')
+  
+  assign(paste('Spawn_Deplete_',mod_area,sep=''),cbind(SpawningBtab,Depletiontab))
+}
+
+```
+
+<!--****************************BEGIN SPAWNING DEPLETE TABLE NORTH****************************************** -->
+
+```{r, eval=TRUE, echo=FALSE, results='asis',out.extra='FloatBarrier', message=FALSE}
+#create the Spawning biomass table
+Spawn_Deplete_N.table = xtable(
+Spawn_Deplete_N,
+caption = c(
+"Recent trend in beginning of the year biomass and depletion for the northern
+China rockfish model."
+),
+label = 'tab:SpawningDeplete_N',
+digits = 3
+)  #digits=0 rounds the numbers
+
+kable(
+Spawn_Deplete_N,
+digits = 3,
+caption = 
+"\\label{tab:SpawningDeplete_N}Recent trend in beginning of the year biomass and depletion for the northern
+China rockfish model."
+) %>% kable_styling(latex_options = c("scale_down"))
+```
+
+<!--****************************BEGIN SPAWNING DEPLETE TABLE CENTRAL****************************************** -->
+
+```{r, eval=TRUE, echo=FALSE, results='asis',out.extra='FloatBarrier', message=FALSE}
+  # #create the Spawning biomass table
+  #   Spawn_Deplete_C.table = xtable(Spawn_Deplete_C, caption=c("Recent trend in beginning of the year biomass and depletion for the central (north of $40^\\circ 10^\\prime$ N. latitude to the OR-WA border) China rockfish model."), label='tab:SpawningDeplete_C',digits=3)  #digits=0 rounds the numbers   
+
+kable(Spawn_Deplete_C,digits = 3,
+caption = "\\label{tab:SpawningDeplete_C}Recent trend in beginning of the year biomass and depletion for the central (north of $40^\\circ 10^\\prime$ N. latitude to the OR-WA border) China rockfish model.") %>% kable_styling(latex_options = c("scale_down"))  
+
+
+```
+
+<!--****************************BEGIN SPAWNING DEPLETE TABLE SOUTH****************************************** -->
+
+```{r, eval=TRUE, echo=FALSE, results='asis',out.extra='FloatBarrier', message=FALSE}
+#create the Spawning biomass table
+# Spawn_Deplete_S.table = xtable(Spawn_Deplete_S, caption=c("Recent trend in beginning of the year spawning output and depletion for the southern (south of $40^\\circ 10^\\prime$ N. latitude) China rockfish model."),
+# label='tab:SpawningDeplete_S',digits=3)  #digits=0 rounds the numbers    
+kable(Spawn_Deplete_S,
+      digits = 3,
+caption = "\\label{tab:SpawningDeplete_S}Recent trend in beginning of the year spawning output and depletion for the southern (south of $40^\\circ 10^\\prime$ N. latitude) China rockfish model.") %>% kable_styling(latex_options = c("scale_down"))
+```
+
+\FloatBarrier
+
+![Time series of estimated summary harvest rate  (points and line: median; shaded areas: 95% credibility intervals) for the three models of China rockfish (North=Washington state, Central = $40^\circ 10^\prime$ N. latitude to the OR/WA border, and South = south of $40^\circ 10^\prime$ N. latitude). \label{fig:Spawnbio_all}](./r4ss/plots_compare/compare18_Fvalue_uncertainty.png)
+
+
+![Time series of spawning output trajectory (circles and line: median; shaded area: 95% credibility intervals) for the three models of China rockfish (North=Washington state, Central = $40^\circ 10^\prime$ N. latitude to the OR/WA border, and South = south of $40^\circ 10^\prime$ N. latitude). \label{fig:Spawnbio_all}](./r4ss/plots_compare/compare2_spawnbio_uncertainty.png)
+
+
+\FloatBarrier
+
+## Recruitment{-}
+Length and age composition data for China rockfish contain insufficient information to reliably resolve year-class strength. Therefore, all three base models assume that recruitment follows a deterministic Beverton-Holt stock-recruitment relationship, so trends in recruitment reflect trends in estimated spawning output. Given the assumed value of steepness and estimates of current stock status, estimated recruitment has remained fairly constant in the central and northern models, while the estimated biomass in the southern area has declined enough to impact spawning output (Figure \ref{fig:recruits_all}, Tables \ref{tab:Recruit_N}, \ref{tab:Recruit_C} and \ref{tab:Recruit_S}).
+
+<!--*************************BEGIN: CREATE RECRUITMENT TABLE ********************************-->
+<!-- BEGIN: CREATE RECRUITMENT TABLE NORTH -->
+```{r, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+for (model in 1:n_models){
+  if(model==1){
+    mod=modN
+    mod_area='N'
+  } else {
+    if(model==2){
+      mod=modC
+      mod_area='C'
+    } else {
+      mod=modS
+      mod_area='S'
+    }}
+  Recruit = mod$derived_quants[grep("Recr",mod$derived_quants$Label),]
+  Recruit = Recruit[c(-1,-2),]
+  #recruitment and std.dev data, calculate lower and upper 95% CI                 
+  Recruityrs = Recruit[Recruit$Label>=paste("Recr_",FirstYR,sep='') &  
+                         Recruit$Label<=paste("Recr_",LastYR,sep=''),]     
+  Recruityrs$YEAR = seq(FirstYR,LastYR)
+  Recruityrs$lowerCI = round(Recruityrs$Value +qnorm(0.025)*Recruityrs$StdDev, digits=2)
+  Recruityrs$upperCI = round(Recruityrs$Value -qnorm(0.025)*Recruityrs$StdDev, digits=2)
+  Recruityrs$CI = paste("(",Recruityrs$lowerCI," - ",Recruityrs$upperCI,")",sep="")
+  Recruityrs$Value = round(Recruityrs$Value,digits=2)
+  Recruittab=subset(Recruityrs,select=c('YEAR','Value','CI'))
+  colnames(Recruittab) = c('Year','Estimated Recruitment (1,000s)','~ 95% confidence interval')
+  assign(paste('Recruittab_',mod_area,sep=''),Recruittab)
+}
+```
+
+<!--************************** BEGIN: CREATE RECRUITMENT TABLE North********************************* -->
+```{r, eval=TRUE, echo=FALSE, results='asis',out.extra='FloatBarrier', message=FALSE}
+#create the recruitment table
+Recruit_N.table = xtable(Recruittab_N, caption=c("Recent recruitment for the northern model (Washington state MCAs 1-4)."),
+                                                  label='tab:Recruit_N',digits=2)  #digits=0 rounds the numbers
+kable(
+Recruit_N.table,
+caption = "\\label{tab:Recruit_N}Recent recruitment for the northern model (Washington state MCAs 1-4)."
+) %>% kable_styling(latex_options = c("scale_down"))  
+```
+
+<!--************************** BEGIN: CREATE RECRUITMENT TABLE Central********************************* -->
+```{r, eval=TRUE, echo=FALSE, results='asis',out.extra='FloatBarrier', message=FALSE}
+#create the recruitment table
+  Recruit_C.table = xtable(Recruittab_C, caption=c("Recent recruitment for the central model ($40^\\circ 10^\\prime$ N. latitude to the OR/WA border)."),label='tab:Recruit_C',digits=2)  #digits=0 rounds the numbers
+kable(
+Recruit_C.table,
+caption = "\\label{tab:Recruit_C}Recent recruitment for the central model ($40^\\circ 10^\\prime$ N. latitude to the OR/WA border)."
+) %>% kable_styling(latex_options = c("scale_down")) 
+```
+
+<!--************************** BEGIN: CREATE RECRUITMENT TABLE SOUTH********************************* -->
+```{r, eval=TRUE, echo=FALSE, results='asis',out.extra='FloatBarrier', message=FALSE}
+#create the Spawning biomass table
+Recruit_S.table = xtable(Recruittab_S, caption="\\label{tab:Recruit_C}Recent recruitment for the southern model (south of $40^\\circ 10^\\prime$ N. latitude).", label='tab:Recruit_S',digits=2)  #digits=0 rounds the numbers
+kable(
+  Recruittab_S,
+  caption = "\\label{tab:Recruit_S}Recent recruitment for the southern model (south of $40^\\circ 10^\\prime$ N. latitude).") %>% kable_styling(latex_options = c("scale_down")) 
+```
+<!--********************************* END: CREATE RECRUITMENT TABLE********************************************* -->
+
+ \FloatBarrier
+
+![Time series of estimated China rockfish recruitments for the three base-case models with 95\% confidence or credibility intervals. \label{fig:recruits_all}](./r4ss/plots_compare/compare8_recruits_uncertainty.png)
+
+\FloatBarrier
+
+  
+
+##Exploitation status{-}
+Harvest rates estimated by the northern area model for Washington have never exceeded management target levels (Table \ref{tab:SPR_Exploit_N} and Figure \ref{fig:spr_all}). Model results for the central area suggest that harvest rates have briefly exceeded the current proxy MSY value around 2000, but has remained below the management target in the last decade (Table \ref{tab:SPR_Exploit_C} and Figure \ref{fig:spr_all}). Historical harvest rates for China rockfish rose steadily in the southern management area until the mid-1990s and exceeded the target SPR harvest rate for several decades, and is just below the target harvest rate as of 2013 (Table \ref{tab:SPR_Exploit_S} and Figure \ref{fig:spr_all}).  A summary of China rockfish exploitation histories for the northern, central, and southern areas is provided as Figure \ref{fig:phase_all}.
+
+
+\FloatBarrier 
+
+![Estimated relative depletion with approximate 95\% asymptotic confidence intervals (dashed lines) for the three base case assessment models. \label{fig:reldeplete_all}](./r4ss/plots_compare/compare4_Bratio_uncertainty.png)
+
+\FloatBarrier
+
+<!-- *******************************************************BEGIN: CREATE EXPLOITATION AND SPRratio TABLE********************************************************** -->
+```{r, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+for (model in 1:n_models){
+  if(model==1){
+    mod=modN
+    mod_area='N'
+  } else {
+    if(model==2){
+      mod=modC
+      mod_area='C'
+    } else {
+      mod=modS
+      mod_area='S'
+    }}  
+  Exploit = mod$derived_quants[grep("F",mod$derived_quants$Label),]
+  Exploit = Exploit[c(-1,-2),]
+  
+  SPRratio = mod$derived_quants[grep("SPRratio",mod$derived_quants$Label),]
+  SPRratio = SPRratio[c(-1,-2),]
+
+#########################################################################
+#CHANGE ME
+      FirstYR=2010  # minimum year for the Spawning biomass table
+      LastYR=2019  # maximum year for the Spawning biomass table
+#########################################################################
+
+  #exploitation and calculate lower and upper 95% CI                 
+     Exploityrs = Exploit[Exploit$Label>=paste("F_",FirstYR,sep='') &  
+                           Exploit$Label<=paste("F_",LastYR,sep=''),]     
+     Exploityrs$YEAR = seq(FirstYR,LastYR)
+     Exploityrs$lowerCI = round(Exploityrs$Value +qnorm(0.025)*Exploityrs$StdDev, digits=2)
+     Exploityrs$upperCI = round(Exploityrs$Value -qnorm(0.025)*Exploityrs$StdDev, digits=2)
+     Exploityrs$CI = paste("(",Exploityrs$lowerCI,"-",Exploityrs$upperCI,")",sep="")
+     Exploittab=subset(Exploityrs,select=c('Value','CI'))
+       colnames(Exploittab) = c('Exploitation rate','~ 95% confidence interval')
+
+
+  #spawning potential ratio and calculate lower and upper 95% CI  
+      SPRratioyrs = SPRratio[SPRratio$Label>=paste("SPRratio_",FirstYR,sep='') &  
+                       SPRratio$Label<=paste("SPRratio_",LastYR,sep=''),]     
+    SPRratioyrs$Year = seq(FirstYR,LastYR)
+    SPRratioyrs$lowerCI = round(SPRratioyrs$Value +qnorm(0.025)*SPRratioyrs$StdDev, digits=2)
+    SPRratioyrs$upperCI = round(SPRratioyrs$Value -qnorm(0.025)*SPRratioyrs$StdDev, digits=2)
+    SPRratioyrs$CI = paste("(",SPRratioyrs$lowerCI,"-",SPRratioyrs$upperCI,")",sep="")
+    SPRratiotab=subset(SPRratioyrs,select=c('Year','Value','CI'))
+    SPRratiotab$Year = as.factor(SPRratiotab$Year)
+    colnames(SPRratiotab) = c('Year','Fishing intensity','~ 95% confidence interval')
+    
+      assign(paste('SPRratio_Exploit_',mod_area,sep=''),cbind(SPRratiotab,Exploittab))
+}
+```
+
+<!-- *****************************EXPLOITATION AND SPRratio TABLE NORTH***************************-->
+
+```{r, eval=TRUE, echo=FALSE, results='asis',out.extra='FloatBarrier', message=FALSE}
+  #create the exploitation and SPRratio
+   SPRratio_Exploit_N.table = xtable(SPRratio_Exploit_N, caption=c("Recent trend in spawning potential ratio and exploitation for the northern China rockfish model  (Washington state MCAs 1-4).  Fishing intensity is (1-SPR) divided by 50\\% (the SPR target) and exploitation is F divided by  F\\textsubscript{SPR}."),label='tab:SPR_Exploit_N')  #digits=0 rounds the numbers
+   
+kable(
+SPRratio_Exploit_N.table,
+caption = "\\label{tab:SPR_Exploit_N}Recent trend in spawning potential ratio and exploitation for the northern China rockfish model (Washington state MCAs 1-4).  Fishing intensity is (1-SPR) divided by 50\\% (the SPR target) and exploitation is F divided by  F\\textsubscript{SPR}."
+) %>% kable_styling(latex_options = c("scale_down")) 
+```
+ 
+\FloatBarrier
+
+<!-- *****************************EXPLOITATION AND SPRratio TABLE CENTRAL***************************-->
+```{r, eval=TRUE, echo=FALSE, results='asis',out.extra='FloatBarrier', message=FALSE}
+#create the exploitation and SPRratio
+SPRratio_Exploit_C.table = xtable(SPRratio_Exploit_C, caption=c("Recent trend in spawning potential ratio and exploitation  for the central China rockfish model ($40^\\circ 10^\\prime$ N.  latitude to the OR/WA border).  Fishing intensity is (1-SPR) divided by  50\\% (the SPR target) and exploitation is F divided by  F\\textsubscript{SPR}."),
+                                  label='tab:SPR_Exploit_C')  #digits=0 rounds the numbers
+kable(
+  SPRratio_Exploit_C.table,
+  caption = "\\label{tab:SPR_Exploit_C}Recent trend in spawning potential ratio and exploitation  for the central China rockfish model ($40^\\circ 10^\\prime$ N.  latitude to the OR/WA border).  Fishing intensity is (1-SPR) divided by  50\\% (the SPR target) and exploitation is F divided by  F\\textsubscript{SPR}.") %>% kable_styling(latex_options = c("scale_down")) 
+```
+
+ 
+\FloatBarrier
+
+
+<!-- *****************************EXPLOITATION AND 1-SPR TABLE SOUTH***************************-->
+```{r, eval=TRUE, echo=FALSE, results='asis',out.extra='FloatBarrier', message=FALSE}
+#create the exploitation and SPRratio
+ SPRratio_Exploit_S.table = xtable(SPRratio_Exploit_S, caption=c("Recent trend in spawning potential ratio and exploitation for the southern China rockfish model $40^\\circ 10^\\prime$ N. latitude).  Fishing intensity is (1-SPR) divided by 50\\% (the SPR target) and exploitation is F divided by F\\textsubscript{SPR}."), label='tab:SPR_Exploit_S')  #digits=0 rounds the numbers
+kable(
+SPRratio_Exploit_S.table,
+caption = c(
+"\\label{tab:SPR_Exploit_S}Recent trend in spawning potential ratio and exploitation for the southern China rockfish model $40^\\circ 10^\\prime$ N. latitude).  Fishing intensity is (1-SPR) divided by 50\\% (the SPR target) and exploitation is F divided by                      F\\textsubscript{SPR}."
+)
+) %>% kable_styling(latex_options = c("scale_down")) 
+```
+<!-- END: CREATE EXPLOITATION AND SPRratio TABLE -->
+ 
+
+\FloatBarrier
+
+
+
+
+
+![Estimated spawning potential ratio (SPR) for the northern, central, and southern base-case models. One minus SPR is plotted so that higher exploitation rates occur on the upper portion of the y-axis. The management target is plotted as a red horizontal line and values above this reflect harvests in excess of the overfishing proxy based on the SPR\textsubscript{50\%} harvest rate. The last year in the base model is 2014; grey shading indicates forecast period. \label{fig:spr_all}](./r4ss/plots_compare/compare6_SPRratio_uncertainty.png)
+
+
+![Phase plot of estimated relative (1-SPR) vs. relative spawning biomass for the southern, central, and northern base case models. The relative (1-SPR) is (1-SPR) divided by 50\% (the SPR target). Relative depletion is the annual spawning biomass divided by the unfished spawning biomass. \label{fig:phase_all}](./r4ss/plots_compare/compare13_phase_plot.png)
+
+ 
+\FloatBarrier
+
+
+##Ecosystem considerations{-}
+
+In this assessment, ecosystem considerations were not explicitly included in the analysis.  This is primarily due to a lack of relevant data and results of analyses (conducted elsewhere) that could contribute ecosystem-related quantitative information for the assessment.
+
+Recently available habitat information was used to select the data used in the onboard observer indices.
+
+##Reference points{-}
+
+\textbf{Note: The text below and Tables k - l reflect the accepted base case models from the 2015 assessments.}
+
+The management line for China rockfish is at $40^\circ 10^\prime$ N. latitude, with differing management guidelines north and south.  From 2005-2010, the Nearshore Rockfish Complexes north and south of $40^\circ 10^\prime$ N. latitude were managed by a total catch Optimum Yield (OY).  As of the Pacific Fishery Management Council (PFMC) 2011-12 management cycle, China rockfish has a component OFL and ABC within the northern and southern Nearshore Rockfish Complexes, based on the work by Dick and MacCall [-@Dick2010].
+
+This stock assessment estimates that China rockfish in the north are above the biomass target. The spawning output of the stock declined between the 1960s and 1990s but has largely been stable during the past few decades.  The estimated relative depletion level in 2015 is 73.4% (~95% asymptotic interval: $\pm$ 63.7% - 83.2%, corresponding to an unfished spawning output of 24.4 billion eggs (~95% asymptotic interval: 15.2 – 33.7 billion eggs) of spawning output in the base model (Table \ref{tab:Ref_pts_N}).  Unfished age 5+ biomass was estimated to be 240.8 mt in the base case model. The target spawning output based on the biomass target ($SB_{40\%}$) is 9.8 billion eggs, which gives a catch of 6.3 mt. Equilibrium yield at the proxy $F_{MSY}$ harvest rate corresponding to $SPR_{50\%}$ is 5.8 mt.
+
+This stock assessment estimates that central area China rockfish are just above the biomass target. The rate of spawning output decline is estimated to be steepest during the 1980s to 1990s and has continued to decline since the 1990s at a slower rate. The estimated relative depletion level in 2015 is 61.5% (~95% asymptotic interval: $\pm$ 53.8% - 69.2%), corresponding to an unfished spawning output of 65.1 billion eggs (~95% asymptotic interval: 51.8 – 78.4 billion eggs) of spawning output in the base model (Table \ref{tab:Ref_pts_C}). Unfished age 5+ biomass was estimated to be 591.5 mt in the base case model. The target spawning output  based on the biomass target ($SB_{40\%}$) is 26 billion eggs, which gives a catch of 15.7 mt. Equilibrium yield at the proxy $F_{MSY}$ harvest rate corresponding to $SPR_{50\%}$ is 14.5 mt. 
+
+This stock assessment estimates that China rockfish south of $40^\circ 10^\prime$ N. latitude are below the biomass target, but above the minimum stock size threshold, and have been increasing over the last 15 years. The estimated relative depletion level in 2015 is 27.9% (~95% asymptotic interval: $\pm$ 21.2% - 34.7%), corresponding to an unfished spawning output of 66.5 billion eggs (~95% asymptotic interval:  49.6 - 83.4 billion eggs) of spawning output in the base model (Table \ref{tab:Ref_pts_S}). Unfished age 5+ biomass was estimated to be 768.6 mt in the base case model. The target spawning output based on the biomass target ($SB_{40\%}$) is 26.6 billion eggs, which gives a catch of 21.1 mt. Equilibrium yield at the proxy $F_{MSY}$ harvest rate corresponding to $SPR_{50\%}$ is 19.5 mt. 
+
+
+ 
+\FloatBarrier
+
+
+<!-- ********************************BEGIN: REFERENCE POINTS TABLE********************************************** -->
+```{r, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+## These should be input but not updated. There's no reason they should change much, but to be safe will load old mods.
+rm(modN, modC, modS)
+load("./r4ss/China_SS_output2015.RData")
+for (model in 1:n_models){
+  if(model==1){
+    mod=modN
+    mod_area='N'
+  } else {
+    if(model==2){
+      mod=modC
+      mod_area='C'
+    } else {
+      mod=modS
+      mod_area='S'
+    }}
+names(mod$derived_quants)[1] <- 'Label' ## this was all caps in prev mods for some reason
+Ref_pts = rbind(
+  SSB_Unfished    = mod$derived_quants[grep("SSB_U",mod$derived_quants$Label),],
+  TotBio_Unfished = mod$derived_quants[grep("TotBio",mod$derived_quants$Label),],
+  Recr_Unfished   = mod$derived_quants[grep("Recr_Un",mod$derived_quants$Label),],
+  SPB_2015        = mod$derived_quants[grep("SPB_2015",mod$derived_quants$Label),],
+  Depletion_2015  = mod$derived_quants[grep("Bratio_2015",mod$derived_quants$Label),],
+  Refpt_sB        = c(NA,NA,NA),
+  SSB_Btgt        = mod$derived_quants[grep("SSB_Btgt",mod$derived_quants$Label),],
+  SPR_Btgt        = mod$derived_quants[grep("SPR_Btgt",mod$derived_quants$Label),],
+  Fstd_Btgt       = mod$derived_quants[grep("Fstd_Btgt",mod$derived_quants$Label),],
+  TotYield_Btgt   = mod$derived_quants[grep("TotYield_Btgt",mod$derived_quants$Label),],
+  Refpt_SPR       = c(NA,NA,NA),
+  SSB_SPRtgt      = mod$derived_quants[grep("SSB_SPRtgt",mod$derived_quants$Label),],
+  SPR_proxy       = c('SPR_proxy',.5,NA),
+  Fstd_SPRtgt     = mod$derived_quants[grep("Fstd_SPRtgt",mod$derived_quants$Label),],
+  TotYield_SPRtgt = mod$derived_quants[grep("TotYield_SPRtgt",mod$derived_quants$Label),],
+  Refpts_MSY      = c(NA,NA,NA),
+  SSB_MSY         = mod$derived_quants[grep("SSB_MSY",mod$derived_quants$Label),],
+  SPR_MSY         = mod$derived_quants[grep("SPR_MSY",mod$derived_quants$Label),],
+  Fstd_MSY        = mod$derived_quants[grep("Fstd_MSY",mod$derived_quants$Label),],
+  TotYield_MSY    = mod$derived_quants[grep("TotYield_MSY",mod$derived_quants$Label),] )
+Ref_pts = Ref_pts[,1:3]
+Ref_pts$Value = as.numeric(Ref_pts$Value)
+Ref_pts$StdDev = as.numeric(Ref_pts$StdDev)
+Ref_pts$Value1 = ifelse(Ref_pts$Value>=1,as.character(round(Ref_pts$Value,1)),as.character(round(Ref_pts$Value,4)))   
+
+Ref_pts$lowerCI = round(Ref_pts$Value +qnorm(0.025)*Ref_pts$StdDev, digits=4)
+Ref_pts$upperCI = round(Ref_pts$Value -qnorm(0.025)*Ref_pts$StdDev, digits=4)
+Ref_pts$lowerCI1 = ifelse(Ref_pts$lowerCI>=1,as.character(round(Ref_pts$lowerCI,1)),as.character(round(Ref_pts$lowerCI,4))) 
+Ref_pts$upperCI1 = ifelse(Ref_pts$upperCI>=1,as.character(round(Ref_pts$upperCI,1)),as.character(round(Ref_pts$upperCI,4))) 
+Ref_pts$CI1 = paste("(",Ref_pts$lowerCI1,"-",Ref_pts$upperCI1,")",sep="")
+Quantity <-  c('Unfished spawning output (billions of eggs)',
+            'Unfished age 5+ biomass (mt)',
+            'Unfished recruitment (R0, thousands)',
+            'Spawning output (2015, billions of eggs)',
+            'Depletion (2015)',
+            '*Reference points based on SB_B 40% *',
+            'Proxy spawning output B40%',
+            'SPR resulting in B40% (SPR_B40%)',
+            'Exploitation rate resulting in B40%',
+            'Yield with SPR_B40% at B_40% (mt)',
+            '*Reference points based on SPR proxy for MSY*',
+            'Spawning output',
+            'SPR_{proxy}',
+            'Exploitation rate corresponding to SPR proxy',
+            'Yield with SPR proxy at SB SPR (mt)',
+            'Reference points based on estimated MSY values',
+            'Spawning output at MSY (SBMSY)',
+            'SPR MSY',
+            'Exploitation rate at MSY',
+            'MSY (mt) '
+)
+Ref_pts = cbind(Quantity, Ref_pts[,c(4,9)])
+Ref_pts[c(6,11,13,16),3]=''
+Ref_pts[c(6,11,16),2]=''
+colnames(Ref_pts) = c('Quantity','Estimate','~95%  Confidence Interval')
+
+assign(paste('Ref_pts_',mod_area,sep=''),Ref_pts)
+}
+rm(modN, modC, modS)
+
+```
+
+
+<!-- ***********************************REFERENCE POINTS TABLE NORTH*******************************************--> 
+```{r, eval=TRUE, echo=FALSE, results='asis',  message=FALSE}
+ #create the Reference points
+    Ref_pts_N.table = xtable(Ref_pts_N, caption=c("Summary of reference points and management quantities for the northern  (Washington state MCAs 1-4) base case model."), label='tab:Ref_pts_N')
+
+kable(
+Ref_pts_N.table,
+caption = "\\label{tab:Ref_pts_N}Summary of reference points and management quantities for the northern  (Washington state MCAs 1-4) base case model.") %>%
+  kable_styling(latex_options = c("scale_down"))
+
+ #create the Reference points
+    # Ref_pts_N.table = xtable(Ref_pts_N, caption=c("Summary of reference points and management quantities for the northern (Washington state MCAs 1-4) base case model."), label='tab:Ref_pts_N')  
+    # align(Ref_pts_N.table) = c('l','>{\\raggedright}p{4.1in}','>{\\centering}p{.65in}','>{\\centering}p{1.4in}')  
+    # print(Ref_pts_N.table, include.rownames=FALSE, caption.placement="top",sanitize.text.function = function(x){x})
+```
+ 
+
+\FloatBarrier
+
+<!-- ***********************************REFERENCE POINTS TABLE CENTRAL*******************************************--> 
+```{r, eval=TRUE, echo=FALSE, results='asis',out.extra='FloatBarrier', message=FALSE}
+ #create the Reference points
+    Ref_pts_C.table = xtable(Ref_pts_C, caption=c("Summary of reference points and management quantities for the central   ($40^\\circ 10^\\prime$ N. latitude to the OR/WA border) base case model."),   label='tab:Ref_pts_C')  #digits=0 rounds the numbers
+       
+kable(
+Ref_pts_C.table,
+caption = "\\label{tab:Ref_pts_C}Summary of reference points and management quantities for the central ($40^\\circ 10^\\prime$ N. latitude to the OR/WA border) base case model.") %>% 
+  kable_styling(latex_options = c("scale_down"))
+```
+
+ 
+\FloatBarrier
+
+<!-- ***********************************REFERENCE POINTS TABLE SOUTH********************************************--> 
+```{r, eval=TRUE, echo=FALSE, results='asis',out.extra='FloatBarrier', message=FALSE}
+ #create the Reference points
+   Ref_pts_S.table = xtable(Ref_pts_S, caption=c("Summary of reference points and management quantities for the southern   (south of $40^\\circ 10^\\prime$ N. latitude) base case model."),   label='tab:Ref_pts_S')  #digits=0 rounds the numbers
+   kable(
+Ref_pts_S.table,
+caption = "\\label{tab:Ref_pts_S}Summary of reference points and management quantities for the southern 
+                                               (south of $40^\\circ 10^\\prime$ N. latitude) base case model.") %>% 
+  kable_styling(latex_options = c("scale_down"))
+```
+<!-- ************************************************************END: REFERENCE POINTS TABLE ******************************************************************************--> 
+ 
+
+
+\FloatBarrier
+
+
+
+##Management performance{-}
+China rockfish is managed in the northern and southern Nearshore Rockfish Complex (split at $40^\circ 10^\prime$ N. latitude.  Since the 2011-2012 management cycle, China rockfish has a contribution OFL and ACL within each the northern and southern Nearshore Rockfish Complexes (Table \ref{tab:mnmgt_perform}).  The estimated catch of China rockfish north of $40^\circ 10^\prime$ N. latitude of  Nearshore Rockfish Complex has been above both the China rockfish contribution to the northern Nearshore Rockfish Complex OFL and ACL in all years (2011-2014).  The estimated catch of China rockfish south of $40^\circ 10^\prime$ N. latitude of  Nearshore Rockfish Complex has been below the  China rockfish contribution to the northern Nearshore Rockfish Complex OFL and ACL in all years (2011-2014).  A summary of these values as well as other base case summary results can be found in Table \ref{tab:base_summary}.
+
+
+<!-- *************************BEGIN: CREATE MANAGEMENT PERFORMANCE TABLE*******************************************--> 
+
+```{r, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+mngmnt = read.csv("./txt_files/mngmt_performance.csv",na.strings = "na")
+mngmnt[is.na(mngmnt)] <- ""
+colnames(mngmnt) = c(
+  'Year',
+  'Management guideline',
+  'Nearshore rockfish north',
+  'China contrib. north',
+  'Estimated catch north',
+  'Nearshore rockfish south',
+  'China contrib. south',
+  'Estimated catch south'
+  )
+```
+
+```{r, eval=TRUE, echo=FALSE, results='asis',out.extra='FloatBarrier', message=FALSE}
+ #create the management performance table
+     mngmnt.table = xtable(mngmnt, caption=c("Recent trend in total catch and commercial landings (mt) relative to the management 
+                                             guidelines. Estimated total catch reflect the commercial landings plus the model estimated discarded biomass."), 
+                                             label='tab:mnmgt_perform')  #digits=0 rounds the numbers
+  kable(
+mngmnt.table,
+caption = "\\label{tab:mnmgt_perform}Recent trend in total catch and commercial landings (mt) relative to the management guidelines. Estimated total catch reflect the commercial landings plus the model estimated discarded biomass.") %>% 
+  kable_styling(latex_options = c("scale_down"))
+```
+
+<!-- ********************************END: CREATE MANAGEMENT PERFORMANCE TABLE *************************************************-->
+
+##Unresolved problems and major uncertainties{-}
+As in most/all stock assessments, the appropriate value for stock-recruit steepness remains a major uncertainty for China rockfish. In this assessment a prior value was available from a meta-analysis, allowing bracketing of the uncertainty. Exploration of the southern model during the STAR panel meeting established that the range of uncertainty in current and projected biomass status provided by this bracketing was very similar to the range due to natural mortality, and that natural mortality alone would be used to bracket uncertainty in model results for management advice.
+
+While the northern and the southern area models are able to estimate a plausible value of natural mortality with an apparently good level of precision, this was not possible with the central area model. 
+
+The fishery-dependent abundance indices used in the assessment are relatively noisy.  There is no fishery-independent index. The assessments assume that trends in CPUE indices are representative of population trends.
+
+Assessment results for the central and the northern area models are dependent on the method used for weighting the conditional age-at-length data.  This is an area of active research and there is a lack of consensus on an agreed approach.  A workshop is planned for later this year that might provide guidance.  For this assessment, the Panel recommended use of harmonic mean method, because it is a well-understood and frequently applied method that provided intermediate results compared to other alternatives.
+
+The current term of reference for stock assessment require development of a single decision table with states of nature ranging along the dominant axis of uncertainty.  This presumes that uncertainty is consequential only for a single variable or estimated quantity, such as natural mortality, steepness, or ending biomass. This approach may fail to capture important elements of uncertainty that should be communicated to the Council and its advisory bodies.  Additional flexibility in the development of decision tables is needed.
+
+
+ 
+\FloatBarrier
+
+
+##Decision Tables{-}
+
+The forecasts of stock abundance and yield were developed using the final base models. The total catches in 2015 and 2016 are set to the PFMC adopted China rockfish contribution ACLs in the northern and central models (Table \ref{tab:mnmgt_perform}). The southern model total catches in 2019 and 2020 are projections. The exploitation rate for 2021 and beyond is based upon an SPR harvest rate of 50%. The average of 2018-2020 catch by fleet was used to distribute catches in forecasted years. The forecasted projections of the OFL for each model are presented in Table \ref{tab:OFL_projection}.
+
+Uncertainty in the forecasts is based upon the three states of nature agreed upon at the STAR panel and are based on a low value of M, 0.05, and a high value, 0.09. Current medium-term forecasts based on the alternative states of nature project that the stock, under the current control rule as applied to the base model, will decline towards the target stock size Table \ref{tab:decision_table_north}. The current control rule under the low state of nature results in a stock decline into the precautionary zone, while the high state of nature maintains the stock at near unfished levels. Removing the catches resulting from the low M state of nature, assuming the base and high values of M both maintain the stock at well above the current target stock size, as does removing the recent average catches under all states of nature. Removing the high M catches under the base model M and high M states of nature results in the population going to extremely low levels during the projection period, spawning biomass and stock depletion values are not reported for years in which the stock goes to these very low levels. 
+
+Current medium-term forecasts based on the alternative states of nature for the central model project that the stock, under the current control rule as applied to the base model, will decline towards the target stock size Table \ref{tab:decision_table_central}. The current control rule under the low state of nature results in a stock in the precautionary zone, while the high state of nature maintains the stock increasing from 40% to 50% depletion from 2017 - 2026.  Removing the catches resulting from the low M state of nature, assuming the base and high values of M both maintain the stock at well above the current target stock size.  Removing the high M catches under the base model M and low M states of nature results in the population going to extremely low levels during the projection period.  Removing average catches under the base M and high M states of nature result in the stock remaining above the current target stock size, and an ending depletion of 37% in 2026 for the low M state of nature.
+
+Assuming that catches in 2015 and 2016 equal recent average catch, and that catches beginning in 2017 follow the default ACL harvest control rule, projections of expected China spawning output from the southern base model suggest the stock will be at roughly `r paste0(round(modS$derived_quants[modS$derived_quants$Label == 'Bratio_2021','Value'],2)*100,"%")` of unfished spawning output in 2021, and increase to `r paste0(round(modS$derived_quants[modS$derived_quants$Label == 'Bratio_2030','Value'],2)*100,"%")` by 2030 (Table \ref{tab:decision_table_south}). The stock is expected to remain below the target stock size (40% of unfished spawning output) in the base model and “low M” states of nature through 2026, and to exceed target size in the “high M” scenario, assuming stationarity in the stock-recruitment assumptions.
+
+\FloatBarrier
+
+<!-- ***************************************BEGIN OFL TABLE********************************************************************-->
+```{r, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+load("./r4ss/China_SS_output2019.RData")
+     #Get the OFL catch data from each model
+      OFL_N = modN$derived_quants[grep("OFL",modN$derived_quants$Label),]
+      OFL_N = OFL_N[,2]
+      
+      OFL_C = modC$derived_quants[grep("OFL",modC$derived_quants$Label),]
+      OFL_C = OFL_C[,2]
+      
+      OFL_S = modS$derived_quants[grep("OFL",modS$derived_quants$Label),]
+      OFL_S = OFL_S[,2]
+  
+   #Turn into a dataframe and get the total
+      OFL = as.data.frame(cbind(OFL_N, OFL_C, OFL_S))
+      OFL$Total = rowSums(OFL)
+      OFL$Year= as.numeric(sub("^[^_]*_", "", modN$derived_quants[grep("OFL",modN$derived_quants$Label),'Label']))
+      OFL = OFL[OFL$Year < 2031,]
+      OFL <- OFL %>% select(Year, everything())
+      colnames(OFL) = c('Year','North','Central','South','Total') 
+```
+
+```{r, eval=TRUE, echo=FALSE, warning = FALSE, results='asis',out.extra='FloatBarrier', message=FALSE}
+OFL.table = xtable(round(subset(OFL, Year > 2020),2)[,2:ncol(OFL)], caption=c("Projections of potential OFL (mt) for each model, using the base model forecast."),label = 'tab:OFL_projection')
+
+kable(
+OFL.table,
+caption = "\\label{tab:OFL_projection}Projections of potential OFL (mt) for each model, using the base model forecast.") 
+```
+
+<!-- *****************************************END OFL TABLE*******************************************-->
+
+\FloatBarrier
+
+<!-- *************************BEGIN: NORTHERN DECISION TABLE*******************************************-->
+```{r, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+decision_north = read.csv("./txt_files/decision_table_North.csv")
+colnames(decision_north) = c('', 'Year',	'Catch',	'Spawning Output',	'Depletion',
+                                      'Spawning Output',	'Depletion',	'Spawning Output',	'Depletion')
+
+```
+
+```{r, eval=TRUE, echo=FALSE, results='asis',out.extra='FloatBarrier', message=FALSE, warning=FALSE,}
+        decision_north.table = xtable(decision_north, caption=c("Summary of 10-year projections beginning in 2017 for alternate states of nature  based on an axis of uncertainty for the northern model.  Columns range over low,   mid, and high states of nature, and rows range over different assumptions of 
+                                                           catch levels. An entry of '--' indicates that the stock is driven to very low abundance under the
+                                                           particular scenario."), 
+                                                           label='tab:decision_table_north')
+
+# kable(
+# decision_north.table,
+# caption = "\\label{tab:decision_table_north}Summary of 10-year projections beginning in 2017 for alternate states of nature  based on an axis of uncertainty for the northern model.  Columns range over low,   mid, and high states of nature, and rows range over different assumptions of 
+#                                                            catch levels. An entry of '--' indicates that the stock is driven to very low abundance under the
+#                                                            particular scenario.") %>% 
+#   kable_styling(latex_options = c("scale_down"))      
+        align(decision_north.table) = c('l','l|','c','c|','>{\\centering}p{.7in}','c|','>{\\centering}p{.7in}','c|','>{\\centering}p{.7in}','c')
+
+            addtorow <- list()
+            addtorow$pos <- list()
+            addtorow$pos[[1]] <- -1
+            addtorow$pos[[2]] <- -1
+            addtorow$command <- c( ' \\multicolumn{3}{c}{} &  \\multicolumn{2}{c}{}
+                                   &  \\multicolumn{2}{c}{*{States of nature}}
+                                   &   \\multicolumn{2}{c}{} \\\\\n',
+                                 ' \\multicolumn{3}{c}{}  &  \\multicolumn{2}{c}{Low M 0.05}
+                                   &  \\multicolumn{2}{c}{Base M 0.07}
+                                   &   \\multicolumn{2}{c}{High M 0.09} \\\\\n')
+     print(decision_north.table,add.to.row=addtorow, include.rownames=FALSE, caption.placement="top",
+         hline.after=c(-1,0,10,20,30,nrow(decision_north.table)),
+         scalebox=.75)
+
+```
+<!-- *************************END: NORTHERN DECISION TABLE*******************************************-->
+
+ 
+\FloatBarrier
+
+
+
+<!-- *************************BEGIN: CENTRAL DECISION TABLE*******************************************-->
+```{r, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+decision_central = read.csv("./txt_files/decision_table_Central.csv")
+colnames(decision_central) = c('', 'Year',  'Catch',	'Spawning Output',	'Depletion',
+                                      'Spawning Output',	'Depletion',	'Spawning Output',	'Depletion')
+
+```
+
+```{r, eval=TRUE, echo=FALSE, results='asis',out.extra='FloatBarrier', message=FALSE, warning=FALSE}
+        decision_central.table = xtable(decision_central, caption=c("Summary of 10-year projections beginning in 2017 for alternate states of nature 
+                                                           based on an axis of uncertainty for the central model.  Columns range over low, mid,
+                                                           and high states of nature, and rows range over different assumptions of catch 
+                                                           levels.  An entry of '--' indicates that the stock is driven to very low abundance under the
+                                                           particular scenario."), 
+                                                           label='tab:decision_table_central')
+      
+        align(decision_central.table) = c('l','l|','c','c|','>{\\centering}p{.7in}','c|','>{\\centering}p{.7in}','c|','>{\\centering}p{.7in}','c') 
+
+            addtorow <- list()
+            addtorow$pos <- list()
+            addtorow$pos[[1]] <- -1
+            addtorow$pos[[2]] <- -1
+            addtorow$command <- c( ' \\multicolumn{3}{c}{} &  \\multicolumn{2}{c}{} 
+                                   &  \\multicolumn{2}{c}{*{States of nature}} 
+                                   &   \\multicolumn{2}{c}{} \\\\\n', 
+                                 ' \\multicolumn{3}{c}{}  &  \\multicolumn{2}{c}{Low M 0.05} 
+                                   &  \\multicolumn{2}{c}{Base M 0.07} 
+                                   &   \\multicolumn{2}{c}{High M 0.09} \\\\\n')
+     print(decision_central.table,add.to.row=addtorow, include.rownames=FALSE, caption.placement="top",
+         hline.after=c(-1,0,10,20,30,nrow(decision_central.table)),scalebox=.75)
+
+```
+<!-- *************************END: CENTRAL DECISION TABLE*******************************************-->
+
+\FloatBarrier
+
+<!-- *************************BEGIN: SOUTH DECISION TABLE*******************************************-->
+```{r, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+         decision_south = read.csv("./txt_files/decision_table_south.csv")
+         colnames(decision_south) = c('', 'Year',  'Catch',  'Spawning Output',	'Depletion',
+                                      'Spawning Output',	'Depletion',	'Spawning Output',	'Depletion')
+
+```
+
+```{r, eval=TRUE, echo=FALSE, results='asis',out.extra='FloatBarrier', warning=FALSE, message=FALSE}
+        decision_south.table = xtable(decision_south, caption=c("Summary of 10-year projections beginning in 2017 for alternate states of nature 
+                                                           based on an axis of uncertainty for the southern model.  Columns range over low, mid,
+                                                           and high states of nature, and rows range over different assumptions of catch 
+                                                           levels. "), 
+                                                           label='tab:decision_table_south')
+      
+        align(decision_south.table) = c('l','l|','c','c|','>{\\centering}p{.7in}','c|','>{\\centering}p{.7in}','c|','>{\\centering}p{.7in}','c') 
+
+            addtorow <- list()
+            addtorow$pos <- list()
+            addtorow$pos[[1]] <- -1
+            addtorow$pos[[2]] <- -1
+            addtorow$command <- c( ' \\multicolumn{3}{c}{} &  \\multicolumn{2}{c}{} 
+                                   &  \\multicolumn{2}{c}{*{States of nature}} 
+                                   &   \\multicolumn{2}{c}{} \\\\\n', 
+                                 ' \\multicolumn{3}{c}{}  &  \\multicolumn{2}{c}{Low M 0.05} 
+                                   &  \\multicolumn{2}{c}{Base M 0.07} 
+                                   &   \\multicolumn{2}{c}{High M 0.09} \\\\\n')
+     print(decision_south.table,add.to.row=addtorow, include.rownames=FALSE, caption.placement="top",
+         hline.after=c(-1,0,10,20,30,nrow(decision_south.table)),scalebox=.75)
+
+```
+<!-- *************************END: SOUTH DECISION TABLE*******************************************-->
+
+
+<!--*********************************************************** BEGIN: CREATE RESULTS SUMMARY TABLE **************************************************************************--> 
+```{r, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+#CHANGE ME
+FirstYR=2010  # minimum year for the Spawning biomass table
+LastYR=2019  # maximum year for the Spawning biomass table 
+###collect the data from all the tables
+# read in the management table
+mngmt = read.csv("./txt_files/mngmt_performance_base.csv")
+mngmt = mngmt[,-1]
+
+#north
+   #SPR ratio
+    SPRratio_Exploit_N = SPRratio_Exploit_N[,c(2,4)]
+    SPRratio_Exploit_N[,c(1,2)] = round(SPRratio_Exploit_N[,c(1,2)],2)
+    SPRratio_Exploit_N = SPRratio_Exploit_N[-dim(SPRratio_Exploit_N)[1],]
+   #SPR blanks for the last year
+    blanks = c(NA,NA)
+    SPRratio_Exploit_N = rbind(SPRratio_Exploit_N,blanks)
+  #Age 5+ biomass
+    Age5biomassN = modN$timeseries[,c('Yr',"Bio_smry")]
+    Age5biomassyrsN = subset(Age5biomassN, Yr>=(FirstYR) & Yr<=(LastYR))
+    Age5biomassyrsN = Age5biomassyrsN[,2]
+    Age5biomassyrsN = round(Age5biomassyrsN,2)
+   #Spawning and depltions
+    Spawn_Deplete_N = Spawn_Deplete_N[,c(2:5)]
+    Spawn_Deplete_N[,1] = round(Spawn_Deplete_N[,1],1)
+    Spawn_Deplete_N[,3] = round(Spawn_Deplete_N[,3],1)
+   #Recruitment
+    Recruittab_N = Recruittab_N[,c(2,3)]
+    Recruittab_N[,2] = Recruittab_N[,2]
+   #BIND THEM ALL TOGETHER
+    North_summary = cbind(SPRratio_Exploit_N,Age5biomassyrsN,Spawn_Deplete_N,Recruittab_N)
+
+#central
+    SPRratio_Exploit_C = SPRratio_Exploit_C[,c(2,4)]
+    SPRratio_Exploit_C[,c(1,2)] = round(SPRratio_Exploit_C[,c(1,2)],2)
+    SPRratio_Exploit_C = SPRratio_Exploit_C[-dim(SPRratio_Exploit_C)[1],]
+    SPRratio_Exploit_C = rbind(SPRratio_Exploit_C,blanks)
+    Age5biomassC = modC$timeseries[,c('Yr',"Bio_smry")]
+    Age5biomassyrsC = subset(Age5biomassC, Yr>=(FirstYR) & Yr<=(LastYR))
+    Age5biomassyrsC = Age5biomassyrsC[,2]
+    Age5biomassyrsC = round(Age5biomassyrsC,2)
+    Spawn_Deplete_C = Spawn_Deplete_C[,c(2:5)]
+    Spawn_Deplete_C[,1] = round(Spawn_Deplete_C[,1],0)
+    Spawn_Deplete_C[,3] = round(Spawn_Deplete_C[,3],2)
+    Recruittab_C = Recruittab_C[,c(2,3)]
+  Central_summary = cbind(SPRratio_Exploit_C,Age5biomassyrsC,Spawn_Deplete_C,Recruittab_C)
+#south
+    SPRratio_Exploit_S = SPRratio_Exploit_S[,c(2,4)]
+    SPRratio_Exploit_S[,c(1,2)] = round(SPRratio_Exploit_S[,c(1,2)],2)
+    SPRratio_Exploit_S = SPRratio_Exploit_S[-dim(SPRratio_Exploit_S)[1],]
+    SPRratio_Exploit_S = rbind(SPRratio_Exploit_S,blanks)
+    Age5biomassS = modS$timeseries[,c('Yr',"Bio_smry")]
+    Age5biomassyrsS = subset(Age5biomassS, Yr>=(FirstYR) & Yr<=(LastYR))
+    Age5biomassyrsS = Age5biomassyrsS[,2]
+    Age5biomassyrsS = round(Age5biomassyrsS,2)
+    Spawn_Deplete_S = Spawn_Deplete_S[,c(2:5)]
+    Spawn_Deplete_S[,1] = round(Spawn_Deplete_S[,1],0)
+    Spawn_Deplete_S[,3] = round(Spawn_Deplete_S[,3],2)
+    Recruittab_S = Recruittab_S[,c(2,3)]
+  South_summary = cbind(SPRratio_Exploit_S,Age5biomassyrsS,Spawn_Deplete_S,Recruittab_S)
+
+#bind all the data together
+ base_summary = cbind(mngmt,North_summary, Central_summary, South_summary)
+
+
+
+ base_summary = as.data.frame(t(base_summary))
+ base_summary$names=c('Landings (mt)','Total Est. Catch (mt)','Nearshore RF ABC/OFL',
+                      'China contrib. ABC/OFL', 'Nearshore RF OY/ACL','China contrib. OY/ACL',
+                      
+                      'Landings (mt)','Total Est. Catch (mt)','Nearshore RF ABC/OFL',
+                      'China contrib. ABC/OFL','Nearshore RF OY/ACL','China contrib. OY/ACL',
+                      
+                      '(1-$SPR$)(1-$SPR_{50\\%}$)','Exploitation rate','Age 5+ biomass (mt)','Spawning Output',
+                      '~95\\% CI','Depletion','~95\\% CI','Recruits','~95\\% CI',
+                      
+                      '(1-$SPR$)(1-$SPR_{50\\%}$)','Exploitation rate','Age 5+ biomass (mt)','Spawning Output',
+                      '~95\\% CI','Depletion','~95\\% CI','Recruits','~95\\% CI',
+                      
+                      '(1-$SPR$)(1-$SPR_{50\\%}$)','Exploitation rate','Age 5+ biomass (mt)','Spawning Output',
+                      '~95\\% CI','Depletion','~95\\% CI','Recruits','~95\\% CI')
+
+ base_summary$region = c('North of','$40^\\circ 10^\\prime$ N','','','','',
+                         'South of','$40^\\circ 10^\\prime$ N','','','','',
+                         'Northern','model','','','','','','','',
+                         'Central','model','','','','','','','',
+                         'Southern','model','','','','','','','' )
+ base_summary = base_summary[,c(12,11,1:10)]
+ colnames(base_summary) = c('Region',"Quantity",seq(FirstYR,LastYR))
+
+```
+
+```{r, eval=TRUE, echo=FALSE, results='asis',out.extra='FloatBarrier', message=FALSE, warnings = FALSE}
+#  create the Spawning biomass table
+  base_summary.table = xtable(base_summary, caption=c("China rockfish base case results summary."),    label='tab:base_summary',digits=0) 
+      kable(
+base_summary.table,
+caption = "\\label{tab:base_summary}Recent trend in total catch and commercial landings (mt) relative to the management guidelines. Estimated total catch reflect the commercial landings plus the model estimated discarded biomass.") %>% 
+  kable_styling(latex_options = c("scale_down")) %>% landscape()
+
+```
+<!-- ********************************************************END: CREATE RESULTS SUMMARY TABLE *****************************************************************************-->
+
+
+![Equilibrium yield curve for the base case models. Values are based on the 2014 fishery selectivity and with steepness fixed at 0.773. \label{fig:yield_all}](./r4ss/plots_compare/yield_comparison_3_models.png)
+
+
+\FloatBarrier
+
+
+
+\newpage
+
+##Research and data needs{-}
+We recommend the following research be conducted before the next assessment:
+\begin{enumerate}
+
+\item The number of hours fished in Washington should be recorded for each dockside sample (vessel) so that future CPUE can be measured as angler hours rather than just number of anglers per trip. This will allow for a more accurate calculation of effort.
+
+\item The number of hours fished in Oregon should be recorded for each dockside sample (vessel), instead of the start and end times of the entire trip.  This will allow for a more accurate calculation of effort.
+
+\item Compare the habitat-based methods used to subset data for the onboard observer indices to Stephens-MacCall and other filtering methods.
+
+\item Explore the sensitivity of Stephens-MacCall when the target species is “rare” or not common encountered in the data samples.
+
+\item A standardized fishery independent survey sampling nearshore rockfish in all three states would provide a more reliable index of abundance than the indices developed from catch rates in recreational and commercial fisheries. However, information value of such surveys would depend on the consistency in methods over time and space and would require many years of sampling before an informative index could be obtained.
+
+\item A coastwide evaluation of genetic structure of China rockfish is a research priority. Genetic samples should be collected at sites spaced regularly along the coast throughout the range of the species to estimate genetic differences at multiple spatial scales (i.e., isolation by distance).
+ 
+\item Difficulties were encountered when attempting to reconstruct historical recreational catches at smaller spatial scales, and in distinguishing between landings from the private and charter vessels. Improved methods are needed to allocate reconstructed recreational catches to sub-state regions within each fishing mode.
+
+\item There was insufficient time during the STAR Panel review to fully review the abundance indices used in the China rockfish assessments. Consideration should be given to scheduling a data workshop prior to STAR Panel review for review of assessment input data and standardization procedures for indices, potentially for all species scheduled for assessment.  The nearshore data workshop, held earlier this year, was a step in this direction, but that meeting did not deal with the modeling part of index development.
+ 
+\item The Marine Recreational Fisheries Statistics Survey (MRFSS) index in Oregon was excluded from the assessment model because it was learned that multiple intercept interviews were done for a single trip. Evaluate whether database manipulations or some other approach can resolve this issue and allow these data to be used in the assessment. 
+ 
+\item Many of the indices used in the China rockfish assessment model used the Stephens-MacCall (2004) approach to subset the CPUE data. Research is need to evaluate the performance of the method when there are changes in management restrictions and in relative abundance of different species. Examination of the characteristics of trips retained/removed should be a routine part of index standardization, such as an evaluation of whether there are time trends in the proportion of discarded trips.
+ 
+\item Fishery-dependent CPUE indices are likely to be the only trend information for many nearshore species for the foreseeable future.  Indices from a multi-species hook-and-line fishery may be influenced by regulatory changes, such as bag limits, and by interactions with other species (e.g., black rockfish) due to hook competition.  It may be possible to address many of these concerns if a multi-species approach is used to develop the indices, allowing potential interactions and common forcing to be evaluated.
+ 
+\item Consider the development of a fishery-independent survey for nearshore stocks. As the current base model structure has no direct fishery-independent measure of stock trends, any work to commence collection of such a measure for nearshore rockfish, or use of existing data to derive such an index would greatly assist with this assessment.
+ 
+\item Basic life history research may help to resolve assessment uncertainties regarding appropriate values for natural mortality and steepness.
+ 
+\item Examine length composition data of discarded fish from recreational onboard observer programs in California and Oregon. Consider modeling discarded catch using selectivity and retention functions in Stock Synthesis rather than combining retained and discarded catch and assuming they have identical size compositions. Another option would be to model discarded recreational catch as a separate fleet, similar to the way commercial discards were treated in the southern model.
+ 
+\item Ageing data were influential in the China rockfish stock assessments. Collection and ageing of China rockfish otoliths should continue.  Samples from younger fish not typically selected by the fishery are needed to better define the growth curve.
+ 
+\item Consider evaluating depletion estimators of abundance using within season CPUE indices.  This approach would require information on total removals on a reef-by-reef basis.
+ 
+\item The extensive use of habitat information in index development is a strength of the China rockfish assessment. Consideration should be given to how to further incorporate habitat data into the assessment of nearshore species.  The most immediate need seems to be to increase the resolution of habitat maps for waters off Oregon and Washington, and standardization of habitat data format among states.
+ 
+\item Although all the current models for China rockfish estimated implausibly large recruitment deviations when allowed to do so, particularly early in the modeled time period, further exploration of available options in stock synthesis could produce acceptable results. In addition, this work may provide guidance on any additional options that could be added to stock synthesis to better handle this situation. For example, assuming different levels autocorrelation in the stock-recruit relationship for data-moderate stocks may help curb the tendency to estimate extreme recruitment with sparse datasets.
+ 
+\item Research is needed on data-weighting methods in stock assessments. In particular, a standard approach for conditional age-at-length data is needed.  The Center for the Advancement of Population Assessment Methodology (CAPAM) data weighting workshop, scheduled for later this year, should make important progress on this research need.
+
+\end{enumerate}
+
+\newpage
+\renewcommand{\thefigure}{\arabic{figure}}
+\renewcommand{\thetable}{\arabic{table}}
+\setcounter{figure}{0}
+\setcounter{table}{0}
