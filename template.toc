@@ -8,6 +8,6 @@
 \contentsline {subsection}{Ecosystem considerations}{23}{section*.29}% 
 \contentsline {subsection}{Reference points}{23}{section*.30}% 
 \contentsline {subsection}{Management performance}{27}{section*.34}% 
-\contentsline {subsection}{Unresolved problems and major uncertainties}{27}{section*.36}% 
-\contentsline {subsection}{Decision Tables}{28}{section*.37}% 
-\contentsline {subsection}{Research and data needs}{36}{section*.44}% 
+\contentsline {subsection}{Unresolved problems and major uncertainties}{28}{section*.36}% 
+\contentsline {subsection}{Decision Tables}{29}{section*.37}% 
+\contentsline {subsection}{Research and data needs}{35}{section*.43}% 
