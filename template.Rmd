@@ -512,9 +512,9 @@ Recently available habitat information was used to select the data used in the o
 
 The management line for China rockfish is at $40^\circ 10^\prime$ N. latitude, with differing management guidelines north and south.  From 2005-2010, the Nearshore Rockfish Complexes north and south of $40^\circ 10^\prime$ N. latitude were managed by a total catch Optimum Yield (OY).  As of the Pacific Fishery Management Council (PFMC) 2011-12 management cycle, China rockfish has a component OFL and ABC within the northern and southern Nearshore Rockfish Complexes, based on the work by Dick and MacCall [-@Dick2010].
 
-This stock assessment estimates that China rockfish in the north are above the biomass target. The spawning output of the stock declined between the 1960s and 1990s but has largely been stable during the past few decades.  The estimated relative depletion level in 2015 is 73.4% (~95% asymptotic interval: $\pm$ 63.7% - 83.2%, corresponding to an unfished spawning output of 24.4 billion eggs (~95% asymptotic interval: 15.2 – 33.7 billion eggs) of spawning output in the base model (Table \ref{tab:Ref_pts_N}).  Unfished age 5+ biomass was estimated to be 240.8 mt in the base case model. The target spawning output based on the biomass target ($SB_{40\%}$) is 9.8 billion eggs, which gives a catch of 6.3 mt. Equilibrium yield at the proxy $F_{MSY}$ harvest rate corresponding to $SPR_{50\%}$ is 5.8 mt.
+This stock assessment estimates that China rockfish in the north are above the biomass target. The spawning output of the stock declined between the 1960s and 1990s but has largely been stable during the past few decades.  The estimated relative depletion level in 2015 is 73.4% (~95% asymptotic interval: $\pm$ 63.7% - 83.2%, corresponding to an unfished spawning output of 24.4 billion eggs (~95% asymptotic interval: 15.2 - 33.7 billion eggs) of spawning output in the base model (Table \ref{tab:Ref_pts_N}).  Unfished age 5+ biomass was estimated to be 240.8 mt in the base case model. The target spawning output based on the biomass target ($SB_{40\%}$) is 9.8 billion eggs, which gives a catch of 6.3 mt. Equilibrium yield at the proxy $F_{MSY}$ harvest rate corresponding to $SPR_{50\%}$ is 5.8 mt.
 
-This stock assessment estimates that central area China rockfish are just above the biomass target. The rate of spawning output decline is estimated to be steepest during the 1980s to 1990s and has continued to decline since the 1990s at a slower rate. The estimated relative depletion level in 2015 is 61.5% (~95% asymptotic interval: $\pm$ 53.8% - 69.2%), corresponding to an unfished spawning output of 65.1 billion eggs (~95% asymptotic interval: 51.8 – 78.4 billion eggs) of spawning output in the base model (Table \ref{tab:Ref_pts_C}). Unfished age 5+ biomass was estimated to be 591.5 mt in the base case model. The target spawning output  based on the biomass target ($SB_{40\%}$) is 26 billion eggs, which gives a catch of 15.7 mt. Equilibrium yield at the proxy $F_{MSY}$ harvest rate corresponding to $SPR_{50\%}$ is 14.5 mt. 
+This stock assessment estimates that central area China rockfish are just above the biomass target. The rate of spawning output decline is estimated to be steepest during the 1980s to 1990s and has continued to decline since the 1990s at a slower rate. The estimated relative depletion level in 2015 is 61.5% (~95% asymptotic interval: $\pm$ 53.8% - 69.2%), corresponding to an unfished spawning output of 65.1 billion eggs (~95% asymptotic interval: 51.8 - 78.4 billion eggs) of spawning output in the base model (Table \ref{tab:Ref_pts_C}). Unfished age 5+ biomass was estimated to be 591.5 mt in the base case model. The target spawning output  based on the biomass target ($SB_{40\%}$) is 26 billion eggs, which gives a catch of 15.7 mt. Equilibrium yield at the proxy $F_{MSY}$ harvest rate corresponding to $SPR_{50\%}$ is 14.5 mt. 
 
 This stock assessment estimates that China rockfish south of $40^\circ 10^\prime$ N. latitude are below the biomass target, but above the minimum stock size threshold, and have been increasing over the last 15 years. The estimated relative depletion level in 2015 is 27.9% (~95% asymptotic interval: $\pm$ 21.2% - 34.7%), corresponding to an unfished spawning output of 66.5 billion eggs (~95% asymptotic interval:  49.6 - 83.4 billion eggs) of spawning output in the base model (Table \ref{tab:Ref_pts_S}). Unfished age 5+ biomass was estimated to be 768.6 mt in the base case model. The target spawning output based on the biomass target ($SB_{40\%}$) is 26.6 billion eggs, which gives a catch of 21.1 mt. Equilibrium yield at the proxy $F_{MSY}$ harvest rate corresponding to $SPR_{50\%}$ is 19.5 mt. 
 
@@ -723,7 +723,7 @@ Current medium-term forecasts based on the alternative states of nature project 
 
 Current medium-term forecasts based on the alternative states of nature for the central model project that the stock, under the current control rule as applied to the base model, will remain above the target stock size (Table \ref{tab:decision_table_central}). The current control rule under the low state of nature results in a stock in the precautionary zone, while the high state of nature maintains the stock above 83% depletion from 2021-2030.    Removing the high level catches (upper catch stream) under the low M states of nature results in the population going to very low levels during the projection period, and nearing 40% depletion for the last four years even under a base M state of nature. However, removing 2019-2020 average catches results in the stock remaining above the current target stock size under all states of nature.
 
-Assuming that catches beginning in 2021 follow the default ACL harvest control rule, projections of expected China spawning output from the southern base model suggest the stock will be at roughly `r paste0(round(modS$derived_quants[modS$derived_quants$Label == 'Bratio_2021','Value'],2)*100,"%")` of unfished spawning output in 2021, and increase to `r paste0(round(modS$derived_quants[modS$derived_quants$Label == 'Bratio_2030','Value'],2)*100,"%")` by 2030 (Table \ref{tab:decision_table_south}). The stock is expected to remain at or below the target stock size (40% of unfished spawning output) in the base model and “low M” states of nature through 2030 for any of the tested catch scenarios, and to only exceed target size for all years in the “high M” scenario with either default or constant catches, assuming stationarity in the stock-recruitment assumptions.
+Assuming that catches beginning in 2021 follow the default ACL harvest control rule, projections of expected China spawning output from the southern base model suggest the stock will be at roughly `r paste0(round(modS$derived_quants[modS$derived_quants$Label == 'Bratio_2021','Value'],2)*100,"%")` of unfished spawning output in 2021, and increase to `r paste0(round(modS$derived_quants[modS$derived_quants$Label == 'Bratio_2030','Value'],2)*100,"%")` by 2030 (Table \ref{tab:decision_table_south}). The stock is expected to remain at or below the target stock size (40% of unfished spawning output) in the base model and "low M" states of nature through 2030 for any of the tested catch scenarios, and to only exceed target size for all years in the "high M" scenario with either default or constant catches, assuming stationarity in the stock-recruitment assumptions.
 
 \FloatBarrier
 
@@ -898,8 +898,23 @@ for (model in 1:n_models){
   Year = FirstYR:LastYR
   OFL <- mod$derived_quants[grep(paste0('OFLCatch_',2019:2030,collapse = "|"),mod$derived_quants$Label),'Value']
   cp <- read.csv(paste0(getwd(),"/cr",mod_area,"_ABC_base/cproj_",mod_area,".csv"))
-  Landings <- c( rowSums(cp[cp$TYPE == 'PROJECTION',5:ncol(cp)]) ,
-                    read.csv(paste0(getwd(),"/cr",mod_area,"_ABC_base/forecasts/forecast2030/tempforecatch.csv"))$Catch_Used)
+  ## for all regions the ABC is the OFL * BUFFER
+ 
+  ## for non-depleted regions the ACL will = the ABC which should be the OFL * buffer
+  if(mod_area != 'South'){
+    ABC_Landings <- c( rowSums(cp[cp$TYPE == 'PROJECTION',5:ncol(cp)]) ,
+                     read.csv(paste0(getwd(),"/cr",mod_area,"_ABC_base/forecasts/forecast2030/tempforecatch.csv"))$Catch_Used)
+    
+    ACL_Landings <- c( rowSums(cp[cp$TYPE == 'PROJECTION',5:ncol(cp)]) ,
+                       read.csv(paste0(getwd(),"/cr",mod_area,"_ABC_base/forecasts/forecast2030/tempforecatch.csv"))$Catch_Used)
+  } else if(mod_area == 'South'){
+    ## for depleted south they don't match so manually  saved ForeCatch_XXX from last model
+    ABC_Landings <- c( rowSums(cp[cp$TYPE == 'PROJECTION',5:ncol(cp)]) ,
+                       read.csv(paste0(getwd(),"/cr",mod_area,"_ABC_base/forecasts/forecast2030/tempforecatch_OFL_ABC_ACL.csv"))$ABC)
+    ACL_Landings <- c( rowSums(cp[cp$TYPE == 'PROJECTION',5:ncol(cp)]) ,
+                       read.csv(paste0(getwd(),"/cr",mod_area,"_ABC_base/forecasts/forecast2030/tempforecatch_OFL_ABC_ACL.csv"))$FORECATCH_ACL)
+    
+  }
   Age5biomass = mod$timeseries[,c('Yr',"Bio_smry")]
   Age5biomassyrs = subset(Age5biomass, Yr>=(FirstYR) & Yr<=(LastYR))
   Age5biomassyrs = Age5biomassyrs[,2]
@@ -907,8 +922,8 @@ for (model in 1:n_models){
   SSB <- mod$derived_quants[grep(paste0('SSB_',2019:2030,collapse = "|"),mod$derived_quants$Label),'Value']
   
   Depl <- mod$derived_quants[grep(paste0('Bratio_',2019:2030,collapse = "|"),mod$derived_quants$Label),'Value']
-  tableg <- round(cbind(Year, OFL, Landings, Age5biomassyrs, SSB,Depl),2) %>% data.frame(.) %>% mutate("Region" = rep(mod_area, length(Year)))
-  colnames(tableg) <- c('Year','Predicted OFL (mt)','ABC Catch (mt)', 'Age 5+ Biomass (mt)', 'Spawning Biomass (mt)','Depletion', 'Region')
+  tableg <- round(cbind(Year, OFL, ABC_Landings,ACL_Landings, Age5biomassyrs, SSB,Depl),2) %>% data.frame(.) %>% mutate("Region" = rep(mod_area, length(Year)))
+  colnames(tableg) <- c('Year','Predicted OFL (mt)','ABC Catch (mt)', 'ACL Catch (mt)','Age 5+ Biomass (mt)', 'Spawning Biomass (mt)','Depletion', 'Region')
   
       assign(paste('tableG_',mod_area,sep=''),tableg)
 
@@ -950,7 +965,7 @@ We recommend the following research be conducted before the next assessment:
 
 \item Compare the habitat-based methods used to subset data for the onboard observer indices to Stephens-MacCall and other filtering methods.
 
-\item Explore the sensitivity of Stephens-MacCall when the target species is “rare” or not common encountered in the data samples.
+\item Explore the sensitivity of Stephens-MacCall when the target species is "rare" or not commonly encountered in the data samples.
 
 \item A standardized fishery independent survey sampling nearshore rockfish in all three states would provide a more reliable index of abundance than the indices developed from catch rates in recreational and commercial fisheries. However, information value of such surveys would depend on the consistency in methods over time and space and would require many years of sampling before an informative index could be obtained.
 
