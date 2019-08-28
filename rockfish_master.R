@@ -2,7 +2,7 @@ require(dplyr)
 require(readr)
 require(purrr)
 # devtools::install_deps("C:/Users/mkapur/Dropbox/kaputils")
-devtools::install_github("mkapur/kaputils", dependencies = F)
+# devtools::install_github("mkapur/kaputils", dependencies = F)
 library(kaputils)
 # devtools::install_github("r4ss/r4ss@2663227")
 library(r4ss)
@@ -11,7 +11,7 @@ devtools::source_url("https://raw.githubusercontent.com/r4ss/r4ss/development/R/
 # devtools::source_url("https://raw.githubusercontent.com/mkapur/kaputils/master/R/SS_writeforecastMK.R") ## use dev version
 # devtools::source_url("https://raw.githubusercontent.com/mkapur/kaputils/master/R/SS_executivesummaryMK.R")
 # source("./R/SS_executivesummaryMK.R")
-compname <- c('mkapur',"Maia Kapur")[1]
+compname <- c('mkapur',"Maia Kapur")[2]
 
 
 ## rerunning cause GMT tables updated
@@ -99,7 +99,7 @@ modb$derived_quants[grep(paste0("ForeCatch_",2021:2030,collapse = "|"), modb$der
 
 ## Run Const/Upper catch x 3 states ----
 ## Did these separately because the constant nature of the catch requires 
-## non-iteration
+## non-iteration. SS takes the input catches as gospel regardless of stock status.
 rootdir <- paste0("C:/Users/",compname,"/Dropbox/UW/assessments/china_2019_update/chinarock-update-2019/")
 forecast_start <- 2021; forecast_end <- 2031; t = 10
 ## base M is -2.94, low is -2.99, high is -2.41
@@ -188,18 +188,19 @@ for(r in c('North','Central','South')){ ## loop regions
 ## mod RData
 modN <- SS_output(paste0("C:/Users/",compname,"/Dropbox/UW/assessments/china_2019_update/chinarock-update-2019/crNorth_ABC_base/forecasts/forecast2030"))
 modC <- SS_output(paste0("C:/Users/",compname,"/Dropbox/UW/assessments/china_2019_update/chinarock-update-2019/crCentral_ABC_base/forecasts/forecast2030"))
-modS <- SS_output(paste0("C:/Users/",compname,"/Dropbox/UW/assessments/china_2019_update/chinarock-update-2019/crSouth_ABC_base/forecasts/forecast2030"))
+modS <- SS_output(paste0("C:/Users/",compname,"/Dropbox/UW/assessments/china_2019_update/chinarock-update-2019/crSouth_ABC_base/forecasts/forecast2031"))
 save(modN,modC,modS, file = paste0("C:/Users/",compname,"/Dropbox/UW/assessments/china_2019_update/chinarock-update-2019/r4ss/China_SS_output2019.RData"))
 
 ## Comparison plots
 load(paste0("C:/Users/",compname,"/Dropbox/UW/assessments/china_2019_update/chinarock-update-2019/r4ss/China_SS_output2019.RData"))
 list(modN, modC, modS) %>% SSsummarize(.) %>% 
-  SSplotComparisons(shadeForecast = TRUE,  
+  r4ss::SSplotComparisons(shadeForecast = TRUE,  
+                   # subplots = 2,
                     endyrvec = 2030,
                     legendlabels = c("North",'Central','South'),
                     png = T, print = T, 
                     plotdir =paste0("C:/Users/",compname,"/Dropbox/UW/assessments/china_2019_update/chinarock-update-2019/r4ss/plots_compare"))
-
+SSplotTimeseries(modS,subplot = 1)
 
 mod.cols = c("#7570B3" ,"#D95F02","#1B9E77")
 
@@ -241,13 +242,18 @@ for(r in c('North','Central','South')){ ## loop regions
         dec_table$catch[idxr:(idxr+length(YOI)-1)] <- round(upperStream[1,2],2)
         
       } else if (catch == 'ABC' &  idxc ==2){
-        catchvals <- read.csv(paste0(rootdir,"/cr",r,"_ABC_base/forecasts/forecast2030/tempforecatch.csv"))
+        if(r != 'South') {
+          catchvals <- read.csv(paste0(rootdir,"/cr",r,"_ABC_base/forecasts/forecast2030/tempforecatch.csv"))
+          dec_table$catch[idxr:(idxr+length(YOI)-1)] <- round(catchvals$Catch_Used,2)
+        } else if(r == 'South'){
+          catchvals <- read.csv(paste0("C:/Users/",compname,"/Dropbox/UW/assessments/china_2019_update/chinarock-update-2019/cr",r,"_ABC_base/forecasts/forecast2030/tempforecatch_OFL_ABC_ACL.csv"))
+          dec_table$catch[idxr:(idxr+length(YOI)-1)] <- round(catchvals$FORECATCH_ACL,2)
           
           # mod$timeseries[, grepl('Yr|dead[(]B', names(mod$timeseries))] %>% 
           # filter(Yr %in% YOI) %>%
           # select(-Yr) %>% rowSums(.) %>% round(.,2)
+        }
         
-        dec_table$catch[idxr:(idxr+length(YOI)-1)] <- round(catchvals$Catch_Used,2)
         
       }
       # read.csv(paste0(tempdir,"/tempForeCatch.csv"))
@@ -526,3 +532,60 @@ i = i+1
 View(iterOFL)
 
 modN$derived_quants[grep(paste0("OFLCatch_",2021:2030,collapse = "|"), modN$derived_quants$Label),"Value"]
+
+
+
+iterOFL <- data.frame('MOD' = NA,'YEAR' = NA, 'OFL' = NA, 'FORECATCH_ACL' = NA, 
+                      'DEADBIO' = NA,
+                      'REALIZEDBUFFER' = NA,
+                      'TRUEBUFFER_045' =  NA,
+                      'TRUEBUFFER_025' = NA,
+                      "SUMMARYBIO" = NA,
+                      'SPAWNBIO' = NA,
+                      'DEPL' = NA) ## sigma 45)
+i <- 1
+# modNother <- SS_output(paste0("C:/Users/MKapur/Dropbox/UW/assessments/china_2019_update/chinarock-update-2019/crCentral_ABC_base/forecasts/forecast",y))
+load(paste0("C:/Users/mkapur/Dropbox/UW/assessments/china_2019_update/chinarock-update-2019/r4ss/China_SS_output2015.RData"))
+load(paste0("C:/Users/mkapur/Dropbox/UW/assessments/china_2019_update/chinarock-update-2019/r4ss/China_SS_output2019.RData"))
+# 
+# for(m in seq_along(list(modN, modC, modS))){
+# modNother <- list(modN, modC, modS)[[m]]
+modNother <- SS_output("C:/Users/Maia Kapur/Dropbox/UW/assessments/china_2019_update/chinarock-update-2019/crSouth_ABC_base/forecasts/forecast2030")
+
+  for(y in 2019:2030){
+    # iterOFL[i,'MOD'] <- paste0(basename(list.dirs(rd, recursive = F)[l]))
+    iterOFL[i,'MOD'] <- paste(c("modN", "modC", "modS")[m])
+    iterOFL[i,'YEAR'] <- y
+    iterOFL[i,'OFL'] <- modNother$derived_quants[grep(paste0("OFLCatch_",y,collapse = "|"), modNother$derived_quants$Label),"Value"]
+    # iterOFL[i,'FORECATCH'] <- modNother$derived_quants[grep(paste0("ForeCatch_",y,collapse = "|"), modNother$derived_quants$LABEL),"Value"]
+    iterOFL[i,'FORECATCH_ACL'] <- modNother$derived_quants[grep(paste0("ForeCatch_",y,collapse = "|"), modNother$derived_quants$Label),"Value"] %>% round(.,2)
+    
+    iterOFL[i,'DEADBIO'] <-  modNother$timeseries[, grepl('Yr|dead[(]B', names(modNother$timeseries))] %>% filter(Yr == y) %>% select(-Yr) %>% rowSums(.) %>% round(.,2)
+    # iterOFL[i,'REALIZED BUFF'] <-    round(iterOFL[i,'FORECATCH']/iterOFL[i,'OFL'],3)
+    iterOFL[i,'SUMMARYBIO'] <- modNother$timeseries[modNother$timeseries$Yr == y,"Bio_smry"]
+    
+    ## FOR 2019
+    iterOFL[i,'SPAWNBIO'] <-      round(modNother$derived_quants[grep(paste0("SSB_",y,collapse = "|"),modNother$derived_quants$Label),"Value"],2)
+    iterOFL[i,'DEPL'] <-    round(modNother$derived_quants[grep(paste0("Bratio_",y,collapse = "|"), modNother$derived_quants$Label),"Value"],2) # round(qlnorm(0.25,0,0.5*(1+c(1:10)*0.075)),3)[y-2020]
+    
+    
+    # iterOFL[i,'SPAWNBIO'] <-      round(modNother$derived_quants[grep(paste0("SPB_",y,collapse = "|"),modNother$derived_quants$LABEL),"Value"],2)
+    # iterOFL[i,'DEPL'] <-    round(modNother$derived_quants[grep(paste0("Bratio_",y,collapse = "|"), modNother$derived_quants$LABEL),"Value"],2) # round(qlnorm(0.25,0,0.5*(1+c(1:10)*0.075)),3)[y-2020]
+    
+        
+         i <- i+1
+  } ## end yrs
+# } ## end MODS
+iterOFL %>% select(MOD, YEAR, OFL, FORECATCH, SUMMARYBIO, SPAWNBIO,DEPL) %>% write.csv(., file = paste0(getwd(),"/2015_mod_summaries.csv"))
+iterOFL %>% select(MOD, YEAR, OFL, FORECATCH_ACL, DEADBIO) %>% mutate(realbuff = FORECATCH_ACL/OFL)
+
+sbase <- "C:/Users/Maia Kapur/Dropbox/UW/assessments/china_2019_update/chinarock-update-2019/crSouth_ABC_base/forecasts/forecast2030/forecast.ss"
+ sfore <-SS_readforecast(file = sbase,
+                Nareas = modS$nareas,
+                Nfleets = modS$nfishfleets,
+                nseas = 1,
+                version = paste(modS$SS_versionNumeric),
+                readAll = TRUE)
+sfore$ForeCatch %>% filter(Year > 2018) %>%
+  group_by(Year) %>% dplyr::summarise(sumC = sum(Catch_or_F))
+
