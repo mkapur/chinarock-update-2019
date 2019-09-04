@@ -1,5 +1,5 @@
 SS-V3.24U-safe;_08/29/2014;_Stock_Synthesis_by_Richard_Methot_(NOAA)_using_ADMB_11.2_Win64
-Mon Jul 15 11:27:52 2019
+Wed Aug 28 16:48:00 2019
 
 china_south_data.ss  datfilename
 china_south_control.ss  ctlfilename
@@ -483,11 +483,11 @@ TG area year seas tindex gender age N_released
 1  1=use range of years for relF; 2 = set same as forecast relF below
 1 Do_Forecast 
 Forecast selected; next 20 input values will be read as a block then parsed and procesed 
-17 N_Fcast_Yrs 
+18 N_Fcast_Yrs 
 1 Fmult value used only if Do_Forecast==5
  0 0 0 0 Begin-end yrs for average selex; begin-end yrs for allocation
  2014 2014 2014 2014  After Transformation:  begin-end yrs for average selex; begin-end yrs for rel F
-3  HarvestPolicy 
+1  HarvestPolicy 
 0.4  H4010_top 
 0.1  H4010_bot 
 0.773  H4010_scale 
@@ -496,7 +496,7 @@ Forecast selected; next 20 input values will be read as a block then parsed and 
 0 Forecast loop control #3 (reserved for future use) 
 0 Forecast loop control #4 (reserved for future use) 
 0 Forecast loop control #5 (reserved for future use) 
-2030  Fcast_Cap_FirstYear for caps and allocations (should be after any fixed inputs) 
+2031  Fcast_Cap_FirstYear for caps and allocations (should be after any fixed inputs) 
 0  Impl_Error_Std 
 0  Do_Rebuilder 
 -1  Rebuild_Ydecl 
@@ -516,9 +516,9 @@ Now read cap for each fleet, then cap for each area (even if only 1 area), then 
  0 0 0 0 0
  calculated number of allocation groups 0
  Allocation among groups (N entries must match number of allocation groups created) 
-75 N_Fcast_input_catches 
+80 N_Fcast_input_catches 
 2 # basis for input Fcast catch:  2=dead catch; 3=retained catch; 99=input Hrate(F); -1=read fleet/time specific (bio/num units are from fleetunits; note new codes in SSV3.20)
-Now read 75 of fixed forecast catches (yr, seas, fleet, (basis,) catch_or_F) 
+Now read 80 of fixed forecast catches (yr, seas, fleet, (basis,) catch_or_F) 
  Fcast_catches_input 
  2015 1 1 1.1177
  2015 1 2 0.298291
@@ -540,61 +540,66 @@ Now read 75 of fixed forecast catches (yr, seas, fleet, (basis,) catch_or_F)
  2018 1 3 7.01556
  2018 1 4 5.2955
  2018 1 5 0.106105
- 2019 1 1 0.525477
- 2019 1 2 0.889721
- 2019 1 3 6.15083
- 2019 1 4 5.6457
- 2019 1 5 0.112995
- 2020 1 1 0.525477
- 2020 1 2 0.889721
- 2020 1 3 6.15083
- 2020 1 4 5.6457
- 2020 1 5 0.112995
- 2021 1 1 0.59
- 2021 1 2 0.42
- 2021 1 3 6.93
- 2021 1 4 5.23
- 2021 1 5 0.16
- 2022 1 1 0.59
- 2022 1 2 0.42
- 2022 1 3 6.93
- 2022 1 4 5.23
- 2022 1 5 0.15
- 2023 1 1 0.6
- 2023 1 2 0.42
- 2023 1 3 6.92
- 2023 1 4 5.23
- 2023 1 5 0.15
- 2024 1 1 0.59
- 2024 1 2 0.42
- 2024 1 3 6.92
- 2024 1 4 5.24
- 2024 1 5 0.15
- 2025 1 1 0.59
- 2025 1 2 0.42
- 2025 1 3 6.91
- 2025 1 4 5.24
- 2025 1 5 0.16
- 2026 1 1 0.59
- 2026 1 2 0.42
- 2026 1 3 6.91
- 2026 1 4 5.25
- 2026 1 5 0.15
- 2027 1 1 0.6
- 2027 1 2 0.43
- 2027 1 3 6.9
- 2027 1 4 5.25
- 2027 1 5 0.15
- 2028 1 1 0.59
- 2028 1 2 0.43
- 2028 1 3 6.9
- 2028 1 4 5.25
- 2028 1 5 0.15
- 2029 1 1 0.59
- 2029 1 2 0.43
- 2029 1 3 6.9
- 2029 1 4 5.26
- 2029 1 5 0.15
+ 2019 1 1 0.5
+ 2019 1 2 0.79
+ 2019 1 3 4.41
+ 2019 1 4 5.01
+ 2019 1 5 0.1
+ 2020 1 1 0.38
+ 2020 1 2 0.7
+ 2020 1 3 5.86
+ 2020 1 4 4.43
+ 2020 1 5 0.09
+ 2021 1 1 0.5
+ 2021 1 2 0.35
+ 2021 1 3 5.79
+ 2021 1 4 4.37
+ 2021 1 5 0.13
+ 2022 1 1 0.5
+ 2022 1 2 0.34
+ 2022 1 3 5.78
+ 2022 1 4 4.37
+ 2022 1 5 0.13
+ 2023 1 1 0.5
+ 2023 1 2 0.35
+ 2023 1 3 5.78
+ 2023 1 4 4.38
+ 2023 1 5 0.13
+ 2024 1 1 0.5
+ 2024 1 2 0.35
+ 2024 1 3 5.78
+ 2024 1 4 4.38
+ 2024 1 5 0.12
+ 2025 1 1 0.5
+ 2025 1 2 0.35
+ 2025 1 3 5.78
+ 2025 1 4 4.39
+ 2025 1 5 0.12
+ 2026 1 1 0.49
+ 2026 1 2 0.36
+ 2026 1 3 5.77
+ 2026 1 4 4.39
+ 2026 1 5 0.13
+ 2027 1 1 0.49
+ 2027 1 2 0.36
+ 2027 1 3 5.77
+ 2027 1 4 4.39
+ 2027 1 5 0.13
+ 2028 1 1 0.49
+ 2028 1 2 0.35
+ 2028 1 3 5.77
+ 2028 1 4 4.4
+ 2028 1 5 0.12
+ 2029 1 1 0.49
+ 2029 1 2 0.36
+ 2029 1 3 5.77
+ 2029 1 4 4.39
+ 2029 1 5 0.12
+ 2030 1 1 0.49
+ 2030 1 2 0.36
+ 2030 1 3 5.76
+ 2030 1 4 4.4
+ 2030 1 5 0.12
 Processed 
  1.1177 2
  0.298291 2
@@ -616,61 +621,66 @@ Processed
  7.01556 2
  5.2955 2
  0.106105 2
- 0.525477 2
- 0.889721 2
- 6.15083 2
- 5.6457 2
- 0.112995 2
- 0.525477 2
- 0.889721 2
- 6.15083 2
- 5.6457 2
- 0.112995 2
- 0.59 2
- 0.42 2
- 6.93 2
- 5.23 2
- 0.16 2
- 0.59 2
- 0.42 2
- 6.93 2
- 5.23 2
- 0.15 2
- 0.6 2
- 0.42 2
- 6.92 2
- 5.23 2
- 0.15 2
- 0.59 2
- 0.42 2
- 6.92 2
- 5.24 2
- 0.15 2
- 0.59 2
- 0.42 2
- 6.91 2
- 5.24 2
- 0.16 2
- 0.59 2
- 0.42 2
- 6.91 2
- 5.25 2
- 0.15 2
- 0.6 2
- 0.43 2
- 6.9 2
- 5.25 2
- 0.15 2
- 0.59 2
- 0.43 2
- 6.9 2
- 5.25 2
- 0.15 2
- 0.59 2
- 0.43 2
- 6.9 2
- 5.26 2
- 0.15 2
+ 0.5 2
+ 0.79 2
+ 4.41 2
+ 5.01 2
+ 0.1 2
+ 0.38 2
+ 0.7 2
+ 5.86 2
+ 4.43 2
+ 0.09 2
+ 0.5 2
+ 0.35 2
+ 5.79 2
+ 4.37 2
+ 0.13 2
+ 0.5 2
+ 0.34 2
+ 5.78 2
+ 4.37 2
+ 0.13 2
+ 0.5 2
+ 0.35 2
+ 5.78 2
+ 4.38 2
+ 0.13 2
+ 0.5 2
+ 0.35 2
+ 5.78 2
+ 4.38 2
+ 0.12 2
+ 0.5 2
+ 0.35 2
+ 5.78 2
+ 4.39 2
+ 0.12 2
+ 0.49 2
+ 0.36 2
+ 5.77 2
+ 4.39 2
+ 0.13 2
+ 0.49 2
+ 0.36 2
+ 5.77 2
+ 4.39 2
+ 0.13 2
+ 0.49 2
+ 0.35 2
+ 5.77 2
+ 4.4 2
+ 0.12 2
+ 0.49 2
+ 0.36 2
+ 5.77 2
+ 4.39 2
+ 0.12 2
+ 0.49 2
+ 0.36 2
+ 5.76 2
+ 4.4 2
+ 0.12 2
  -1 0
  -1 0
  -1 0
@@ -678,9 +688,9 @@ Processed
  -1 0
  -1 0
  -1 0
- -1 2.86531e+161
- -1 8.02118e-312
  -1 0
+ -1 0
+ -1 1.0181e-309
  done reading forecast 
 
 
@@ -883,13 +893,13 @@ After processing
 999  If you see 999, we got to the end of the control file successfully! 
 
 ***********************************
-N parameters: 158
-Parameters plus derived quant: 868
+N parameters: 160
+Parameters plus derived quant: 877
 Adjust the phases 
 Active parameters: 22
 Turn_off_phase 10
  max_phase 6
-Active parameters plus derived quantities:  733
+Active parameters plus derived quantities:  740
 here2
 end of parameter section
  do variance adjustment for surveys 
@@ -946,7 +956,7 @@ Adjusted size at maxage: 31.8915
  0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07 0.07
  did wtlen and maturity
  made the age_age' key 
-bias_adjustment vector:  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+bias_adjustment vector:  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 start initial conditions 
 Adjusted size at maxage: 31.8915
 Adjusted size at maxage: 31.8915

@@ -736,7 +736,7 @@ OFL_N = OFL_N[,2]
 OFL_C = modC$derived_quants[grep("OFL",modC$derived_quants$Label),]
 OFL_C = OFL_C[,2]
 
-OFL_S = modS$derived_quants[grep("OFL",modS$derived_quants$Label),]
+OFL_S = head(modS$derived_quants[grep("OFL",modS$derived_quants$Label),],-2) ## extra years in model run
 OFL_S = OFL_S[,2]
 
 #Turn into a dataframe and get the total
@@ -910,9 +910,9 @@ for (model in 1:n_models){
   } else if(mod_area == 'South'){
     ## for depleted south they don't match so manually  saved ForeCatch_XXX from last model
     ABC_Landings <- c( rowSums(cp[cp$TYPE == 'PROJECTION',5:ncol(cp)]) ,
-                       read.csv(paste0(getwd(),"/cr",mod_area,"_ABC_base/forecasts/forecast2030/tempforecatch_OFL_ABC_ACL.csv"))$ABC)
+                       read.csv(paste0(getwd(),"/cr",mod_area,"_ABC_base/forecasts/forecast2031/tempforecatch_OFL_ABC_ACL.csv"))$ABC)
     ACL_Landings <- c( rowSums(cp[cp$TYPE == 'PROJECTION',5:ncol(cp)]) ,
-                       read.csv(paste0(getwd(),"/cr",mod_area,"_ABC_base/forecasts/forecast2030/tempforecatch_OFL_ABC_ACL.csv"))$FORECATCH_ACL)
+                       read.csv(paste0(getwd(),"/cr",mod_area,"_ABC_base/forecasts/forecast2031/tempforecatch_OFL_ABC_ACL.csv"))$FORECATCH_ACL)
     
   }
   Age5biomass = mod$timeseries[,c('Yr',"Bio_smry")]
@@ -921,8 +921,8 @@ for (model in 1:n_models){
   Age5biomassyrs = round(Age5biomassyrs,2) 
   SSB <- mod$derived_quants[grep(paste0('SSB_',2019:2030,collapse = "|"),mod$derived_quants$Label),'Value']
   
-  Depl <- mod$derived_quants[grep(paste0('Bratio_',2019:2030,collapse = "|"),mod$derived_quants$Label),'Value']
-  tableg <- round(cbind(Year, OFL, ABC_Landings,ACL_Landings, Age5biomassyrs, SSB,Depl),2) %>% data.frame(.) %>% mutate("Region" = rep(mod_area, length(Year)))
+  Depl <- round(mod$derived_quants[grep(paste0('Bratio_',2019:2030,collapse = "|"),mod$derived_quants$Label),'Value'],3)
+  tableg <- cbind(round(cbind(Year, OFL, ABC_Landings,ACL_Landings, Age5biomassyrs, SSB),2),Depl) %>% data.frame(.) %>% mutate("Region" = rep(mod_area, length(Year)))
   colnames(tableg) <- c('Year','Predicted OFL (mt)','ABC Catch (mt)', 'ACL Catch (mt)','Age 5+ Biomass (mt)', 'Spawning Biomass (mt)','Depletion', 'Region')
   
       assign(paste('tableG_',mod_area,sep=''),tableg)

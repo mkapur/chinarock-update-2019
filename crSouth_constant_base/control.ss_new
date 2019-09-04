@@ -172,6 +172,7 @@
 #DisplayOnly 0 # ForeRecr_2029
 #DisplayOnly 0 # ForeRecr_2030
 #DisplayOnly 0 # ForeRecr_2031
+#DisplayOnly 0 # ForeRecr_2032
 #DisplayOnly 0 # Impl_err_2015
 #DisplayOnly 0 # Impl_err_2016
 #DisplayOnly 0 # Impl_err_2017
@@ -189,6 +190,7 @@
 #DisplayOnly 0 # Impl_err_2029
 #DisplayOnly 0 # Impl_err_2030
 #DisplayOnly 0 # Impl_err_2031
+#DisplayOnly 0 # Impl_err_2032
 #
 #Fishing Mortality info 
 0.2 # F ballpark for annual F (=Z-M) for specified year

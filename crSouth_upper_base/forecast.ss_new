@@ -2,7 +2,7 @@
 #C forecast file written by R function SS_writeforecast
 #C rerun model to get more complete formatting in forecast.ss_new
 #C should work with SS version: 3.24
-#C file write time: 2019-07-15 11:31:08
+#C file write time: 2019-08-28 16:49:12
 # for all year entries except rebuilder; enter either: actual year, -999 for styr, 0 for endyr, neg number for rel. endyr
 1 # Benchmarks: 0=skip; 1=calc F_spr,F_btgt,F_msy 
 2 # MSY: 1= set to F(SPR); 2=calc F(MSY); 3=set to F(Btgt); 4=set to F(endyr) 
@@ -14,12 +14,12 @@
 1 #Bmark_relF_Basis: 1 = use year range; 2 = set relF same as forecast below
 #
 1 # Forecast: 0=none; 1=F(SPR); 2=F(MSY) 3=F(Btgt); 4=Ave F (uses first-last relF yrs); 5=input annual F scalar
-17 # N forecast years 
+18 # N forecast years 
 1 # F scalar (only used for Do_Forecast==5)
 #_Fcast_years:  beg_selex, end_selex, beg_relF, end_relF  (enter actual year, or values of 0 or -integer to be rel. endyr)
  0 0 0 0
 #  2014 2014 2014 2014 # after processing 
-3 # Control rule method (1=catch=f(SSB) west coast; 2=F=f(SSB) ) 
+1 # Control rule method (1=catch=f(SSB) west coast; 2=F=f(SSB) ) 
 0.4 # Control rule Biomass level for constant F (as frac of Bzero, e.g. 0.40); (Must be > the no F level below) 
 0.1 # Control rule Biomass level for no F (as frac of Bzero, e.g. 0.10) 
 0.773 # Control rule target as fraction of Flimit (e.g. 0.75) 
@@ -28,7 +28,7 @@
 0 #_Forecast loop control #3 (reserved for future bells&whistles) 
 0 #_Forecast loop control #4 (reserved for future bells&whistles) 
 0 #_Forecast loop control #5 (reserved for future bells&whistles) 
-2030  #FirstYear for caps and allocations (should be after years with fixed inputs) 
+2031  #FirstYear for caps and allocations (should be after years with fixed inputs) 
 0 # stddev of log(realized catch/target catch) in forecast (set value>0.0 to cause active impl_error)
 0 # Do West Coast gfish rebuilder output (0/1) 
 1999 # Rebuilder:  first year catch could have been set to zero (Ydecl)(-1 to set to 1999)
@@ -49,7 +49,7 @@
 #_Conditional on >1 allocation group
 # allocation fraction for each of: 0 allocation groups
 # no allocation groups
-75 # Number of forecast catch levels to input (else calc catch from forecast F) 
+80 # Number of forecast catch levels to input (else calc catch from forecast F) 
 -1 # code means to read fleet/time specific basis (2=dead catch; 3=retained catch; 99=F)  as below (units are from fleetunits; note new codes in SSV3.20)
 # Input fixed catch values
 #Year Seas Fleet Catch(or_F) Basis
@@ -73,60 +73,65 @@
  2018 1 3 7.01556 2
  2018 1 4 5.2955 2
  2018 1 5 0.106105 2
- 2019 1 1 0.525477 2
- 2019 1 2 0.889721 2
- 2019 1 3 6.15083 2
- 2019 1 4 5.6457 2
- 2019 1 5 0.112995 2
- 2020 1 1 0.525477 2
- 2020 1 2 0.889721 2
- 2020 1 3 6.15083 2
- 2020 1 4 5.6457 2
- 2020 1 5 0.112995 2
- 2021 1 1 0.85 2
- 2021 1 2 0.6 2
- 2021 1 3 9.99 2
- 2021 1 4 7.55 2
- 2021 1 5 0.22 2
- 2022 1 1 0.85 2
- 2022 1 2 0.6 2
- 2022 1 3 9.99 2
- 2022 1 4 7.55 2
+ 2019 1 1 0.5 2
+ 2019 1 2 0.79 2
+ 2019 1 3 4.41 2
+ 2019 1 4 5.01 2
+ 2019 1 5 0.1 2
+ 2020 1 1 0.38 2
+ 2020 1 2 0.7 2
+ 2020 1 3 5.86 2
+ 2020 1 4 4.43 2
+ 2020 1 5 0.09 2
+ 2021 1 1 0.82 2
+ 2021 1 2 0.57 2
+ 2021 1 3 9.53 2
+ 2021 1 4 7.2 2
+ 2021 1 5 0.21 2
+ 2022 1 1 0.83 2
+ 2022 1 2 0.57 2
+ 2022 1 3 9.52 2
+ 2022 1 4 7.2 2
  2022 1 5 0.22 2
- 2023 1 1 0.87 2
- 2023 1 2 0.61 2
- 2023 1 3 9.98 2
- 2023 1 4 7.54 2
- 2023 1 5 0.22 2
- 2024 1 1 0.85 2
- 2024 1 2 0.61 2
- 2024 1 3 9.98 2
- 2024 1 4 7.56 2
+ 2023 1 1 0.82 2
+ 2023 1 2 0.58 2
+ 2023 1 3 9.52 2
+ 2023 1 4 7.21 2
+ 2023 1 5 0.21 2
+ 2024 1 1 0.82 2
+ 2024 1 2 0.58 2
+ 2024 1 3 9.51 2
+ 2024 1 4 7.21 2
  2024 1 5 0.21 2
- 2025 1 1 0.85 2
- 2025 1 2 0.6 2
- 2025 1 3 9.97 2
- 2025 1 4 7.56 2
- 2025 1 5 0.22 2
- 2026 1 1 0.86 2
- 2026 1 2 0.61 2
- 2026 1 3 9.96 2
- 2026 1 4 7.57 2
- 2026 1 5 0.22 2
- 2027 1 1 0.86 2
- 2027 1 2 0.61 2
- 2027 1 3 9.95 2
- 2027 1 4 7.57 2
- 2027 1 5 0.22 2
- 2028 1 1 0.85 2
- 2028 1 2 0.62 2
- 2028 1 3 9.95 2
- 2028 1 4 7.58 2
- 2028 1 5 0.22 2
- 2029 1 1 0.86 2
- 2029 1 2 0.62 2
- 2029 1 3 9.95 2
- 2029 1 4 7.58 2
- 2029 1 5 0.21 2
+ 2025 1 1 0.82 2
+ 2025 1 2 0.58 2
+ 2025 1 3 9.51 2
+ 2025 1 4 7.23 2
+ 2025 1 5 0.2 2
+ 2026 1 1 0.81 2
+ 2026 1 2 0.59 2
+ 2026 1 3 9.49 2
+ 2026 1 4 7.22 2
+ 2026 1 5 0.21 2
+ 2027 1 1 0.81 2
+ 2027 1 2 0.59 2
+ 2027 1 3 9.49 2
+ 2027 1 4 7.22 2
+ 2027 1 5 0.21 2
+ 2028 1 1 0.81 2
+ 2028 1 2 0.58 2
+ 2028 1 3 9.5 2
+ 2028 1 4 7.24 2
+ 2028 1 5 0.2 2
+ 2029 1 1 0.81 2
+ 2029 1 2 0.59 2
+ 2029 1 3 9.49 2
+ 2029 1 4 7.23 2
+ 2029 1 5 0.2 2
+ 2030 1 1 0.81 2
+ 2030 1 2 0.59 2
+ 2030 1 3 9.48 2
+ 2030 1 4 7.24 2
+ 2030 1 5 0.2 2
 #
 999 # verify end of input 

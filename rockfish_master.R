@@ -27,7 +27,7 @@ cr.statevals$high <- c(0.09)
 ## will only invoke CTL par changes when state !=base
 # for(r in c('North','Central','South')){
 #   for(state in c('base','low','high')){
-for(r in c('North','Central','South')){
+# for(r in c('North','Central','South')){
   for(state in c('low','high')){
     rootdir.temp <- paste0("C:/Users/",compname,"/Dropbox/UW/assessments/china_2019_update/chinarock-update-2019/cr",r,"_ABC_",state)
     # newdir.temp <- paste0(rootdir,"/cr",r,"_",catch,"_",state)
@@ -41,11 +41,16 @@ for(r in c('North','Central','South')){
                     statesex = 0,
                     statevals = cr.statevals,
                     forecast_start = 2021,
-                    forecast_end = 2031,
+                    forecast_end = 2032,
                     fixed_catches = catch_projections[catch_projections$YEAR < 2021,5:ncol(catch_projections)],
                     Flimitfraction = catch_projections$PSTAR_0.45[catch_projections$YEAR >2020])
   } ## end state
-} ## end region
+# } ## end region
+
+# SS_output("C:/Users/Maia Kapur/Dropbox/UW/assessments/china_2019_update/chinarock-update-2019/crSouth_ABC_base/forecasts/forecast2021")
+
+## manually inspect if some years return to > b40 
+read.csv(paste0(rootdir.temp,"/forecasts/forecast2031/tempforecatch_OFL_ACL_ABC.csv"))
 
 ## sanity check: these should be different. the low state should be less productive.
 modb<- SS_output(paste0("C:/Users/",compname,"/Dropbox/UW/assessments/china_2019_update/chinarock-update-2019/crNorth_ABC_base/forecasts/forecast2030"))
@@ -103,7 +108,7 @@ modb$derived_quants[grep(paste0("ForeCatch_",2021:2030,collapse = "|"), modb$der
 rootdir <- paste0("C:/Users/",compname,"/Dropbox/UW/assessments/china_2019_update/chinarock-update-2019/")
 forecast_start <- 2021; forecast_end <- 2031; t = 10
 ## base M is -2.94, low is -2.99, high is -2.41
-for(r in c('North','Central','South')){ ## loop regions
+# for(r in c('North','Central','South')){ ## loop regions
   for(catch in c('constant','upper')){ ## loop catch scen
     for(state in c('low','base','high')){
 
@@ -119,7 +124,7 @@ for(r in c('North','Central','South')){ ## loop regions
       if(state != 'base'){
       lastrun <- paste0(rootdir,"cr",r,"_ABC_",state)
       } else if(state == 'base'){
-        lastrun <- paste0(rootdir,"cr",r,"_ABC_",state,"/forecasts/forecast2030")
+        lastrun <- paste0(rootdir,"cr",r,"_ABC_",state,"/forecasts/forecast",forecast_end)
         
       }
       
@@ -147,10 +152,10 @@ for(r in c('North','Central','South')){ ## loop regions
       if(catch == 'constant'){
         ## apply 2019/2020 average to all yrs
         tempForeCatch <- SS_ForeCatch(mod1,
-                                      yrs = 2021:(2021+(t-2)),
+                                      yrs = forecast_start:(forecast_end-1),
                                       average = FALSE,
                                       total = const.catch)
-        fore$ForeCatch[min(which((fore$ForeCatch$Year==2021))):nrow(fore$ForeCatch),]<- tempForeCatch[,1:4]
+        fore$ForeCatch[min(which((fore$ForeCatch$Year==2021))):nrow(fore$ForeCatch),] <- tempForeCatch[,1:4]
       
         writecatch <- fore$ForeCatch %>% filter(Year > 2020) %>% group_by(Year) %>% dplyr::summarise(Catch_Used = sum(Catch_or_F))
         idx = nrow(writecatch)
@@ -163,7 +168,7 @@ for(r in c('North','Central','South')){ ## loop regions
         ## apply 50% over 2021 to all years
         upperStream <- 1.5*mod1$derived_quants[grep("ForeCatch_2021", mod1$derived_quants$Label),"Value"]
         tempForeCatch <- SS_ForeCatch(mod1,
-                                      yrs = 2021:(2021+(t-2)),
+                                      yrs =forecast_start:(forecast_end-1),
                                       average = FALSE,
                                       total = upperStream)
         
@@ -182,13 +187,13 @@ for(r in c('North','Central','South')){ ## loop regions
       setwd(newdir.temp); system('ss3 -nohess') ## works
     } ## end states of nature
   } ## end catch scenarios
-} ## end regions
+# } ## end regions
 
 ## Creation of objects for use in template ----
 ## mod RData
 modN <- SS_output(paste0("C:/Users/",compname,"/Dropbox/UW/assessments/china_2019_update/chinarock-update-2019/crNorth_ABC_base/forecasts/forecast2030"))
 modC <- SS_output(paste0("C:/Users/",compname,"/Dropbox/UW/assessments/china_2019_update/chinarock-update-2019/crCentral_ABC_base/forecasts/forecast2030"))
-modS <- SS_output(paste0("C:/Users/",compname,"/Dropbox/UW/assessments/china_2019_update/chinarock-update-2019/crSouth_ABC_base/forecasts/forecast2031"))
+modS <- SS_output(paste0("C:/Users/",compname,"/Dropbox/UW/assessments/china_2019_update/chinarock-update-2019/crSouth_ABC_base/forecasts/forecast2030"))
 save(modN,modC,modS, file = paste0("C:/Users/",compname,"/Dropbox/UW/assessments/china_2019_update/chinarock-update-2019/r4ss/China_SS_output2019.RData"))
 
 ## Comparison plots
@@ -215,7 +220,7 @@ dev.off()
 
 ## Build decision table (not in SS_executive summary) ----
 YOI <- 2021:2030
-for(r in c('North','Central','South')){ ## loop regions
+# for(r in c('North','Central','South')){ ## loop regions
   dec_table <- matrix(NA, nrow = length(YOI)*3, ncol = 9)
   dec_table <- data.frame(dec_table)
   names(dec_table) <- c('Scenario','Year','catch',paste(c("spawnbio","depl"),rep(c('low','base','high'),each = 2)))
@@ -226,7 +231,9 @@ for(r in c('North','Central','South')){ ## loop regions
     for(state in c('low','base','high')){
       if(catch != 'ABC'  | state != 'base'){
         tempdir <- paste0("C:/Users/",compname,"/Dropbox/UW/assessments/china_2019_update/chinarock-update-2019/cr",r,"_",catch,"_",state)
-      } else if(catch == 'ABC'){
+      } else if(catch == 'ABC'& r != 'South'){
+        tempdir <- paste0("C:/Users/",compname,"/Dropbox/UW/assessments/china_2019_update/chinarock-update-2019/cr",r,"_",catch,"_",state,"/forecasts/forecast2030")
+      } else if(catch == 'ABC' & r == 'South'){
         tempdir <- paste0("C:/Users/",compname,"/Dropbox/UW/assessments/china_2019_update/chinarock-update-2019/cr",r,"_",catch,"_",state,"/forecasts/forecast2030")
       }
       mod <- SS_output(tempdir, covar = F)
@@ -246,7 +253,7 @@ for(r in c('North','Central','South')){ ## loop regions
           catchvals <- read.csv(paste0(rootdir,"/cr",r,"_ABC_base/forecasts/forecast2030/tempforecatch.csv"))
           dec_table$catch[idxr:(idxr+length(YOI)-1)] <- round(catchvals$Catch_Used,2)
         } else if(r == 'South'){
-          catchvals <- read.csv(paste0("C:/Users/",compname,"/Dropbox/UW/assessments/china_2019_update/chinarock-update-2019/cr",r,"_ABC_base/forecasts/forecast2030/tempforecatch_OFL_ABC_ACL.csv"))
+          catchvals <- read.csv(paste0("C:/Users/",compname,"/Dropbox/UW/assessments/china_2019_update/chinarock-update-2019/cr",r,"_ABC_base/forecasts/forecast2031/tempforecatch_OFL_ABC_ACL.csv"))
           dec_table$catch[idxr:(idxr+length(YOI)-1)] <- round(catchvals$FORECATCH_ACL,2)
           
           # mod$timeseries[, grepl('Yr|dead[(]B', names(mod$timeseries))] %>% 
@@ -276,15 +283,15 @@ for(r in c('North','Central','South')){ ## loop regions
   idxr <- idxr+length(YOI) ## jump down to next set of years when catch scenario updates
   } ## end catch
   ## rename to look nice
-  dec_table$Scenario[dec_table$Scenario == 'constant'] <- c(rep(" ",5),'Constant (2019-2020 Average)',rep(" ",5))
-  dec_table$Scenario[dec_table$Scenario == 'ABC'] <- c(rep(" ",5),'40-10 Rule',rep(" ",5))
-  dec_table$Scenario[dec_table$Scenario == 'upper'] <- c(rep(" ",5),'Upper Stream',rep(" ",5))
+  dec_table$Scenario[dec_table$Scenario == 'constant'] <- c(rep(" ",5),'Constant (2019-2020 Average)',rep(" ",4))
+  dec_table$Scenario[dec_table$Scenario == 'ABC'] <- c(rep(" ",5),'40-10 Rule',rep(" ",4))
+  dec_table$Scenario[dec_table$Scenario == 'upper'] <- c(rep(" ",5),'Upper Stream',rep(" ",4))
   ## save dec_table
   write.csv(dec_table, 
             file = paste0("C:/Users/",compname,"/Dropbox/UW/assessments/china_2019_update/chinarock-update-2019/txt_files/decision_table_",
                           r,".csv"),
                           row.names = F)
-} ## end regions
+# } ## end regions
 
 
 
@@ -579,7 +586,7 @@ modNother <- SS_output("C:/Users/Maia Kapur/Dropbox/UW/assessments/china_2019_up
 iterOFL %>% select(MOD, YEAR, OFL, FORECATCH, SUMMARYBIO, SPAWNBIO,DEPL) %>% write.csv(., file = paste0(getwd(),"/2015_mod_summaries.csv"))
 iterOFL %>% select(MOD, YEAR, OFL, FORECATCH_ACL, DEADBIO) %>% mutate(realbuff = FORECATCH_ACL/OFL)
 
-sbase <- "C:/Users/Maia Kapur/Dropbox/UW/assessments/china_2019_update/chinarock-update-2019/crSouth_ABC_base/forecasts/forecast2030/forecast.ss"
+sbase <- "C:/Users/MKapur/Dropbox/UW/assessments/china_2019_update/chinarock-update-2019/crSouth_ABC_base/forecasts/forecast2030/forecast.ss"
  sfore <-SS_readforecast(file = sbase,
                 Nareas = modS$nareas,
                 Nfleets = modS$nfishfleets,
@@ -588,4 +595,21 @@ sbase <- "C:/Users/Maia Kapur/Dropbox/UW/assessments/china_2019_update/chinarock
                 readAll = TRUE)
 sfore$ForeCatch %>% filter(Year > 2018) %>%
   group_by(Year) %>% dplyr::summarise(sumC = sum(Catch_or_F))
+
+SS_ForeCatch(modS,
+             yrs = 2019,
+             average = FALSE,
+             total = 10.81)
+
+## new values given by john -- may need to add or subtract 0.01 mt to match
+SS_ForeCatch(modS,
+             yrs = 2019:2020,
+             average = FALSE,
+             total = c(10.81,11.46))
+
+## manual fixed abcs for these years; paste into 2031 mod and rerun
+SS_ForeCatch(modS,
+             yrs = 2029:2030,
+             average = FALSE,
+             total = c(14.52766,14.6339722))
 
