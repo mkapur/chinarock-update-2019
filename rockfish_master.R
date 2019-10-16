@@ -211,13 +211,15 @@ mod.cols = c("#7570B3" ,"#D95F02","#1B9E77")
 
 png(paste0("C:/Users/",compname,"/Dropbox/UW/assessments/china_2019_update/chinarock-update-2019/r4ss/plots_compare/yield_comparison_3_models.png"),
     width = 8, height = 6, units = 'in', res = 520)
-SSplotYield(modS, col= mod.cols[1], subplot=1)
+SSplotYield(modS, col= mod.cols[1], subplot=1) 
+abline(v = c(0.2,0.4), add = T, col = 'red')
+
 grid()
 SSplotYield(modN, col= mod.cols[2], subplot=1,add = TRUE)
 SSplotYield(modC, col= mod.cols[3], subplot=1, add=TRUE)
 legend('topright', legend=c('South','North','Central'), col=mod.cols, lwd=3, bg='white', bty='n', cex = 1.5)
 dev.off()
-
+modS$derived_quants[grepl('SSB_2017',modS$derived_quants$Label),]
 ## Build decision table (not in SS_executive summary) ----
 YOI <- 2021:2030
 # for(r in c('North','Central','South')){ ## loop regions
